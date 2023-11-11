@@ -9,22 +9,26 @@ import 'animate.css';
 import { Input } from './components/Input';
 import { Button } from './components/ToggleButton';
 
+// const FactoryEducation = () => {};
+
 const Display = ({ name, email, phone, address }) => {
   return (
-    <div className="my-4 mx-auto p-4 max-w-4xl bg-light shadow-lg text-darker">
-      <h1 className=" text-center text-5xl">{name}</h1>
-      <h2 className="flex items-center justify-center gap-2 text-xl">
-        <Icon.Email />
-        {email}
-      </h2>
-      <h2 className="flex items-center justify-center gap-2 text-xl">
-        <Icon.Phone />
-        {phone}
-      </h2>
-      <h2 className="flex items-center justify-center gap-2 text-xl">
-        <Icon.Location />
-        {address}
-      </h2>
+    <div className="my-4 mx-auto max-w-4xl shadow-lg">
+      <header className={'px-4 bg-dark text-pink' + ' ' + (name === '' ? 'py-11' : 'py-6')}>
+        <h1 className="text-center text-4xl">{name}</h1>
+        <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
+          {email !== '' ? <Icon.Email color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {email}
+        </h2>
+        <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
+          {phone !== '' ? <Icon.Phone color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {phone}
+        </h2>
+        <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
+          {address !== '' ? <Icon.Location color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {address}
+        </h2>
+      </header>
     </div>
   );
 };
@@ -35,15 +39,17 @@ const Personal = ({ name, email, phone, address, handleChange }) => {
   return (
     <>
       <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-        <h1 className="text-3xl font-bold bg-white">Personal</h1>
+        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+          <Icon.Personal height={'34px'} width={'34px'} /> Personal
+        </h1>
         <div className={'absolute right-0 top-0'}>
           <Button open={open} handleChange={handleOpen} />
         </div>
         <div className={open ? ' block' : ' hidden'}>
-          <Input infoType={'name'} label={'Full name'} inputType={'text'} value={name} handleChange={handleChange} />
-          <Input infoType={'email'} label={'Email'} inputType={'email'} value={email} handleChange={handleChange} />
-          <Input infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} handleChange={handleChange} />
-          <Input infoType={'address'} label={'Address'} inputType={'text'} value={address} handleChange={handleChange} />
+          <Input required={true} placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} handleChange={handleChange} />
+          <Input required={true} placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} handleChange={handleChange} />
+          <Input required={true} placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} handleChange={handleChange} />
+          <Input required={true} placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} handleChange={handleChange} />
         </div>
       </div>
     </>

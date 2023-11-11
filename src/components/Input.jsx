@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
-export const Input = ({ label, inputType, infoType, handleChange, value }) => {
+export const Input = ({ label, inputType, infoType, handleChange, value, required, placeholder }) => {
   return (
     <label className="flex flex-col font-bold gap-1 p-2 ">
-      {label} (*)
+      {label} {required ?? '(*)'}
       <input
+        placeholder={placeholder}
         onChange={(e) => handleChange(infoType, e.target.value)}
         value={value}
         type={inputType}
