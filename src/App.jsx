@@ -3,102 +3,66 @@
 import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { v4 as uuid } from 'uuid';
-// eslint-disable-next-line no-unused-vars
-import { Content, Customize, Delete, Education, Experience, Email, Phone, Location, CVImage, Show, Hide, Add, Up, Down, Personal, Download, Github } from './components/Icons';
+import * as Icon from './components/Icons';
 import './App.css';
 import 'animate.css';
+import { Input } from './components/Input';
+import { Button } from './components/ToggleButton';
 
 const Display = ({ name, email, phone, address }) => {
   return (
-    <>
-      <h1 className=" text-center text-5xl whitespace-nowrap">{name}</h1>
-      <h2 className="flex items-center justify-center gap-2 whitespace-nowrap text-xl">
-        <Email /> {email}
+    <div className="my-4 mx-auto p-4 max-w-4xl bg-light shadow-lg text-darker">
+      <h1 className=" text-center text-5xl">{name}</h1>
+      <h2 className="flex items-center justify-center gap-2 text-xl">
+        <Icon.Email />
+        {email}
       </h2>
-      <h2 className="flex items-center justify-center gap-2 whitespace-nowrap text-xl">
-        <Phone />
+      <h2 className="flex items-center justify-center gap-2 text-xl">
+        <Icon.Phone />
         {phone}
       </h2>
-      <h2 className="flex items-center justify-center gap-2 whitespace-nowrap text-xl">
-        <Location />
+      <h2 className="flex items-center justify-center gap-2 text-xl">
+        <Icon.Location />
         {address}
       </h2>
-    </>
+    </div>
   );
 };
 
-const Form = () => {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState('Dang Hoang Minh');
-  const [email, setEmail] = useState('minhhoccode111@gmail.com');
-  const [phone, setPhone] = useState('+84 123123123');
-  const [address, setAddress] = useState('Ho Chi Minh, Viet Nam');
-  const handleName = (e) => setName(e.target.value);
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handlePhone = (e) => setPhone(e.target.value);
-  const handleAddress = (e) => setAddress(e.target.value);
-  const handleOpen = () => {
-    setOpen(!open);
-  };
+const Personal = ({ name, email, phone, address, handleChange }) => {
+  const [open, setOpen] = useState(true);
+  const handleOpen = () => setOpen(!open);
   return (
     <>
-      <div className="shadow-2xl m-4 text-darker relative z-10 self-start">
-        <h1 className="m-4 text-3xl font-bold bg-white">Personal</h1>
+      <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+        <h1 className="text-3xl font-bold bg-white">Personal</h1>
         <div className={'absolute right-0 top-0'}>
-          <button type="submit" onClick={handleOpen} className={'m-4 shadow-md hover:scale-110 transition-transform px-4 py-2 bg-dark text-light rounded-lg'}>
-            {open ? <Up color="#fff" /> : <Down color="#fff" />}
-          </button>
+          <Button open={open} handleChange={handleOpen} />
         </div>
-        <div className={'p-2' + (open ? ' block' : ' hidden')}>
-          <label className="flex flex-col font-bold gap-1 p-2 ">
-            Full name (*){' '}
-            <input
-              onChange={handleName}
-              value={name}
-              type="text"
-              className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
-            />
-          </label>
-          <label className="flex flex-col font-bold gap-1 p-2 ">
-            Email (*){' '}
-            <input
-              onChange={handleEmail}
-              value={email}
-              type="email"
-              className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
-            />
-          </label>
-          <label className="flex flex-col font-bold gap-1 p-2 ">
-            Phone number (*){' '}
-            <input
-              onChange={handlePhone}
-              value={phone}
-              type="tel"
-              className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
-            />
-          </label>
-          <label className="flex flex-col font-bold gap-1 p-2 ">
-            Address (*){' '}
-            <input
-              onChange={handleAddress}
-              value={address}
-              type="text"
-              className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
-            />
-          </label>
+        <div className={open ? ' block' : ' hidden'}>
+          <Input infoType={'name'} label={'Full name'} inputType={'text'} value={name} handleChange={handleChange} />
+          <Input infoType={'email'} label={'Email'} inputType={'email'} value={email} handleChange={handleChange} />
+          <Input infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} handleChange={handleChange} />
+          <Input infoType={'address'} label={'Address'} inputType={'text'} value={address} handleChange={handleChange} />
         </div>
-      </div>
-      <div className="m-4 p-4">
-        <Display name={name} phone={phone} address={address} email={email} />
       </div>
     </>
   );
 };
 
 export const App = () => {
+  const [personalInfo, setInfo] = useState({
+    name: 'Dang Hoang Minh',
+    email: 'minhhoccode111@gmail.com',
+    phone: '+84 123123123',
+    address: 'District 10, Ho Chi Minh city, Viet Nam',
+  });
+  const handleInfoChange = (type, value) => setInfo({ ...personalInfo, [type]: value });
+
   return (
-    <div id="wrapper" className="grid grid-cols-2 min-h-screen">
-      <Form />
+    <div id="wrapper" className="min-h-screen">
+      <Personal {...personalInfo} handleChange={handleInfoChange} />
+      <Display {...personalInfo} />
     </div>
   );
 };
