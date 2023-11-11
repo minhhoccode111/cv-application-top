@@ -27,71 +27,52 @@ const Display = ({ name, email, phone, address }) => {
           {address}
         </h2>
       </header>
-      <div className={'p-4'}>khong dieu kien</div>
+      <div className={'p-4'}></div>
     </div>
   );
 };
-
 const Personal = ({ name, email, phone, address, handleChange, currentOpen, handleToggle }) => {
   const isOpen = currentOpen === 'personal';
   return (
-    <>
-      <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-          <Icon.Personal height={'34px'} width={'34px'} /> Personal
-        </h1>
-        <div className={'absolute right-0 top-0'}>
-          <Button isOpen={isOpen} handleChange={() => handleToggle('personal')} />
-        </div>
-        <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
-          <Input required={true} placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} handleChange={handleChange} />
-          <Input required={true} placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} handleChange={handleChange} />
-          <Input required={true} placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} handleChange={handleChange} />
-          <Input required={true} placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} handleChange={handleChange} />
-        </div>
+    <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+      <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+        <Icon.Personal height={'34px'} width={'34px'} /> Personal
+      </h1>
+      <div className={'absolute right-0 top-0'}>
+        <Button isOpen={isOpen} handleChange={() => handleToggle('personal')} />
       </div>
-    </>
+      <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
+        <Input required={true} placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} handleChange={handleChange} />
+        <Input required={true} placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} handleChange={handleChange} />
+        <Input required={true} placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} handleChange={handleChange} />
+        <Input required={true} placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} handleChange={handleChange} />
+      </div>
+    </div>
   );
 };
-
-const Education = ({ school, degree, startDate, endDate, location, handleChange, currentOpen, handleToggle }) => {
+const Education = ({ handleChange, currentOpen, handleToggle }) => {
   const isOpen = currentOpen === 'education';
+  const [school, setSchool] = useState('');
+  const [degree, setDegree] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [location, setLocation] = useState('');
+  const handleSubmit = () => {};
+
   return (
-    <>
-      <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-          <Icon.Education height={'34px'} width={'34px'} /> Education
-        </h1>
-        <div className={'absolute right-0 top-0'}>
-          <Button isOpen={isOpen} handleChange={() => handleToggle('education')} />
-        </div>
-        <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
-          <div className="bg-light h-40"></div>
-        </div>
+    <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+      <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+        <Icon.Education height={'34px'} width={'34px'} /> Education
+      </h1>
+      <div className={'absolute right-0 top-0'}>
+        <Button isOpen={isOpen} handleChange={() => handleToggle('education')} />
       </div>
-    </>
+      <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
+        <div className="bg-light h-40"></div>
+      </div>
+    </div>
   );
 };
-
-const Experience = ({ name, email, phone, address, handleChange, currentOpen, handleToggle }) => {
-  const isOpen = currentOpen === 'experience';
-  return (
-    <>
-      <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-          <Icon.Experience height={'34px'} width={'34px'} /> Experience
-        </h1>
-        <div className={'absolute right-0 top-0'}>
-          <Button isOpen={isOpen} handleChange={() => handleToggle('experience')} />
-        </div>
-        <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
-          <div className="bg-light h-40"></div>
-        </div>
-      </div>
-    </>
-  );
-};
-
 export const App = () => {
   const [personalInfo, setInfo] = useState({
     name: 'Dang Hoang Minh',
@@ -100,22 +81,51 @@ export const App = () => {
     address: 'District 10, Ho Chi Minh city, Viet Nam',
   });
   const handlePersonalInfoChange = (type, value) => setInfo({ ...personalInfo, [type]: value });
-
   const [currentOpen, setCurrentOpen] = useState('personal');
-  const handleCurrentOpenChange = (newCurrentOpen) => {
-    if (newCurrentOpen === currentOpen) {
-      setCurrentOpen(null);
-    } else {
-      setCurrentOpen(newCurrentOpen);
-    }
-  };
-
+  const handleCurrentOpenChange = (newCurrentOpen) => (newCurrentOpen === currentOpen ? setCurrentOpen(null) : setCurrentOpen(newCurrentOpen));
+  const [educationInfo, setEducationInfo] = useState([
+    {
+      degree: 'Bachelor',
+      isHidden: false,
+      endDate: 'Dec 2023',
+      startDate: 'Sep 2019',
+      location: 'Ho Chi Minh, Viet Nam',
+      school: 'Hochiminh College Economy',
+    },
+    {
+      degree: 'Hidden Degree',
+      isHidden: true, // TODO FIXME BUG
+      endDate: 'Hidden end date',
+      startDate: 'Hidden start date',
+      location: 'Hidden Location',
+      school: 'Hidden University',
+    },
+  ]);
   return (
     <div id="wrapper" className="min-h-screen">
       <Personal {...personalInfo} handleChange={handlePersonalInfoChange} currentOpen={currentOpen} handleToggle={handleCurrentOpenChange} />
       <Education currentOpen={currentOpen} handleToggle={handleCurrentOpenChange} />
-      <Experience currentOpen={currentOpen} handleToggle={handleCurrentOpenChange} />
+      {/* <Experience currentOpen={currentOpen} handleToggle={handleCurrentOpenChange} /> */}
       <Display {...personalInfo} />
     </div>
   );
 };
+
+// const Experience = ({ name, email, phone, address, handleChange, currentOpen, handleToggle }) => {
+//   const isOpen = currentOpen === 'experience';
+//   return (
+//     <>
+//       <div className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+//         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+//           <Icon.Experience height={'34px'} width={'34px'} /> Experience
+//         </h1>
+//         <div className={'absolute right-0 top-0'}>
+//           <Button isOpen={isOpen} handleChange={() => handleToggle('experience')} />
+//         </div>
+//         <div className={'' + ' ' + (isOpen ? 'block' : ' hidden')}>
+//           <div className="bg-light h-40"></div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
