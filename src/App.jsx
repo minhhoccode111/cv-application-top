@@ -16,7 +16,7 @@ const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, pl
         onChange={(e) => inputOnChangeCb(infoType, e.target.value)}
         value={value}
         type={inputType}
-        className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
+        className="px-3 focus:shadow-lg bg-light focus:bg-white font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
         required
       />
     </label>
@@ -37,7 +37,7 @@ const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
     );
   }
 };
-const Display = ({ name, email, phone, address }) => {
+const Display = ({ name, email, phone, address, educationItems }) => {
   return (
     <section className="my-4 mx-auto max-w-4xl shadow-lg">
       {/* header in display section is based on personal's info */}
@@ -56,8 +56,39 @@ const Display = ({ name, email, phone, address }) => {
           {address}
         </h2>
       </header>
-      {/*  */}
-      <div className={'p-4'}></div>
+      <article className={'pt-8 px-8 pb-2'}>
+        <header className="bg-light m-2">
+          <h2 className="text-center text-2xl p-2">Education</h2>
+        </header>
+        <div className="p-2">
+          {educationItems.map((item) => {
+            if (item.isHidden) return null;
+            return (
+              <table key={item.id} className="p-2">
+                <tbody className="">
+                  <tr>
+                    <td className="w-44">
+                      {item.startDate} - {item.endDate}
+                    </td>
+                    <td>
+                      <strong>{item.school}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{item.location}</td>
+                    <td>{item.degree}</td>
+                  </tr>
+                </tbody>
+              </table>
+            );
+          })}
+        </div>
+      </article>
+      <article className={'pt-2 pb-8 px-8'}>
+        <header className="bg-light m-2">
+          <h2 className="text-center text-2xl p-2">Professional Experience</h2>
+        </header>
+      </article>
     </section>
   );
 };
@@ -168,7 +199,7 @@ const Education = ({
 };
 export const App = () => {
   // state to store and change which section is opened
-  const [currentOpenSection, setCurrentOpenSection] = useState('education');
+  const [currentOpenSection, setCurrentOpenSection] = useState('null');
   const updateCurrentOpenSection = (newCurrentOpen) => (newCurrentOpen === currentOpenSection ? setCurrentOpenSection(null) : setCurrentOpenSection(newCurrentOpen));
 
   // state to store and change personal section's values
@@ -188,38 +219,29 @@ export const App = () => {
   // add item to education items list on form submit and delete when click button on displayed item
   const [educationItems, setEducationItems] = useState([
     {
-      degree: 'Bachelor',
+      degree: 'Bachelors in Economics',
       isHidden: false,
-      endDate: 'Dec 2023',
-      startDate: 'Sep 2019',
-      location: 'Ho Chi Minh, Viet Nam',
+      endDate: '12/2023',
+      startDate: '9/2019',
+      location: 'Ho Chi Minh, VN',
       school: 'Hochiminh College Economy',
       id: uuid(),
     },
     {
-      degree: 'Hidden Degree',
-      isHidden: true,
-      endDate: 'Hidden end date',
-      startDate: 'Hidden start date',
+      degree: `Master's Degree in Computer Science`,
+      isHidden: false,
+      endDate: 'now',
+      startDate: '1/2001',
       location: 'Hidden Location',
       school: 'Hidden University',
       id: uuid(),
     },
     {
-      degree: 'Bachelor',
-      isHidden: false,
-      endDate: 'Dec 2023',
-      startDate: 'Sep 2019',
-      location: 'Ho Chi Minh, Viet Nam',
-      school: 'Hochiminh College Economy',
-      id: uuid(),
-    },
-    {
-      degree: 'Hidden Degree',
+      degree: `Master's Degree in Math`,
       isHidden: true,
-      endDate: 'Hidden end date',
-      startDate: 'Hidden start date',
-      location: 'Hidden Location',
+      endDate: 'Unknown',
+      startDate: 'Unknown',
+      location: 'Unknown Location',
       school: '123 123 123 123 123 123 123 123 123 123 123 ',
       id: uuid(),
     },
@@ -244,17 +266,17 @@ export const App = () => {
     <main id="wrapper" className="min-h-screen">
       <Personal {...personalInfo} inputOnChangeCb={updatePersonalInfoOnInputChange} currentOpenSection={currentOpenSection} toggleOpenThisSection={() => updateCurrentOpenSection('personal')} />
       <Education
-        currentOpenSection={currentOpenSection}
-        toggleOpenThisSection={() => updateCurrentOpenSection('education')}
-        valueOfInputsInForm={valueOfInputsInFormInEducation}
-        updateValueOfInputsInForm={updateValueOfInputsInFormInEducation}
-        resetValueOfInputsInForm={resetValueOfInputsInFormInEducation}
         educationItems={educationItems}
+        currentOpenSection={currentOpenSection}
         formOnSubmitCb={formOnSubmitCbInEducation}
-        toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
         deleteEducationItem={deleteEducationItemInEducation}
+        valueOfInputsInForm={valueOfInputsInFormInEducation}
+        resetValueOfInputsInForm={resetValueOfInputsInFormInEducation}
+        updateValueOfInputsInForm={updateValueOfInputsInFormInEducation}
+        toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
+        toggleOpenThisSection={() => updateCurrentOpenSection('education')}
       />
-      <Display {...personalInfo} />
+      <Display {...personalInfo} educationItems={educationItems} />
     </main>
   );
 };
