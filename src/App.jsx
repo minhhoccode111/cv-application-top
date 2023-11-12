@@ -25,14 +25,14 @@ const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, pl
 const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
   if (iconType === 'arrow') {
     return (
-      <button type="button" onClick={buttonOnClickCb} className={'p-4 mx-4 my-1'}>
+      <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
         {isOpen ? <Icon.Up color="#132043" height={'30px'} width={'30px'} /> : <Icon.Down color="#132043" height={'30px'} width={'30px'} />}
       </button>
     );
   } else {
     return (
-      <button type="button" onClick={buttonOnClickCb} className={'p-4 mx-4 my-1'}>
-        {isOpen ? <Icon.Show color="#132043" height={'30px'} width={'30px'} /> : <Icon.Hide color="#132043" height={'30px'} width={'30px'} />}
+      <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
+        {isOpen ? <Icon.Hide color="#132043" height={'30px'} width={'30px'} /> : <Icon.Show color="#132043" height={'30px'} width={'30px'} />}
       </button>
     );
   }
@@ -41,18 +41,18 @@ const Display = ({ name, email, phone, address }) => {
   return (
     <section className="my-4 mx-auto max-w-4xl shadow-lg">
       {/* header in display section is based on personal's info */}
-      <header className={'px-4 bg-darker text-pink' + ' ' + (name === '' ? 'py-11' : 'py-6')}>
+      <header className={'px-4 bg-darker text-light' + ' ' + (name === '' ? 'py-11' : 'py-6')}>
         <h1 className="text-center text-4xl">{name}</h1>
         <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
-          {email !== '' ? <Icon.Email color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {email !== '' ? <Icon.Email color={'#FDF0F0'} height={'24px'} width={'24px'} /> : null}
           {email}
         </h2>
         <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
-          {phone !== '' ? <Icon.Phone color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {phone !== '' ? <Icon.Phone color={'#FDF0F0'} height={'24px'} width={'24px'} /> : null}
           {phone}
         </h2>
         <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
-          {address !== '' ? <Icon.Location color={'#F1B4BB'} height={'24px'} width={'24px'} /> : null}
+          {address !== '' ? <Icon.Location color={'#FDF0F0'} height={'24px'} width={'24px'} /> : null}
           {address}
         </h2>
       </header>
@@ -68,7 +68,7 @@ const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSec
       <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
         <Icon.Personal height={'34px'} width={'34px'} /> Personal
       </h1>
-      <div className={'absolute right-0 top-0'}>
+      <div className={'absolute right-0 top-0 p-4 mx-4'}>
         <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </div>
       <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>
@@ -87,7 +87,7 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
   const resetValueOfInputsInForm = () => setValueOfInputsInForm({ school: '', degree: '', startDate: '', endDate: '', location: '' });
   const updateValueOfInputsInForm = (type, value) => setValueOfInputsInForm({ ...valueOfInputsInForm, [type]: value });
   // toggle display form or a list of education items
-  const [isDisplayForm, setIsDisplayForm] = useState(true);
+  const [isDisplayForm, setIsDisplayForm] = useState(false);
   const updateIsDisplayForm = () => {
     resetValueOfInputsInForm();
     setIsDisplayForm(!isDisplayForm);
@@ -127,7 +127,7 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
       endDate: 'Hidden end date',
       startDate: 'Hidden start date',
       location: 'Hidden Location',
-      school: 'Hidden University',
+      school: '123 123 123 123 123 123 123 123 123 123 123 ',
       id: uuid(),
     },
   ]);
@@ -137,7 +137,10 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
     setEducationItems([...educationItems, { ...valueOfInputsInForm, id: uuid(), isHidden: false }]);
     resetValueOfInputsInForm();
   };
-  const deleteEducationItemWithSameId = (deletedId) => {
+  const toggleHiddenEducationItem = (toggledId) => {
+    // TODO BUG
+  };
+  const deleteEducationItem = (deletedId) => {
     setEducationItems(educationItems.filter((item) => item.id !== deletedId));
   };
   // choose to display form or a list of education items
@@ -151,10 +154,17 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
         <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} />
         <div className="flex justify-evenly px-2 py-4">
-          <button className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-xl py-2 px-4 border border-darker'} onClick={updateIsDisplayForm} type="button">
+          <button
+            className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-md transition-colors rounded-lg hover:scale-105 py-2 px-4 border border-darker'}
+            onClick={updateIsDisplayForm}
+            type="button"
+          >
             Cancel
           </button>
-          <button className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-green hover:shadow-xl py-2 px-4 border border-darker'} type="submit">
+          <button
+            className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-green hover:shadow-md transition-colors rounded-lg hover:scale-105 py-2 px-4 border border-darker'}
+            type="submit"
+          >
             Save
           </button>
         </div>
@@ -164,16 +174,23 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
     JSXToDisplayInThisSection = (
       <div className="">
         <ul>
-          {educationItems.map((info) => (
-            <li key={info.id}>
-              <p>{info.school}</p>
-              <button onClick={() => deleteEducationItemWithSameId(info.id)}>
-                <Icon.Delete />
-              </button>
+          {educationItems.map((item) => (
+            <li key={item.id} className="flex justify-between items-center py-4 text-lg">
+              <p>{item.school.length > 41 ? item.school.slice(0, 41) + '...' : item.school}</p>
+              <div className="flex items-center gap-2">
+                <ToggleButton iconType={'eye'} isOpen={item.isHidden} buttonOnClickCb={() => toggleHiddenEducationItem(item.id)} />
+                <button onClick={() => deleteEducationItem(item.id)}>
+                  <Icon.Delete color={'#a00'} width={'30px'} height={'30px'} />
+                </button>
+              </div>
             </li>
           ))}
         </ul>
-        <button onClick={updateIsDisplayForm}>add new section</button>
+        <div className="flex justify-center p-2">
+          <button onClick={updateIsDisplayForm} className="">
+            <Icon.Add width={'30px'} height={'30px'} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -182,7 +199,7 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
       <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
         <Icon.Education height={'34px'} width={'34px'} /> Education
       </h1>
-      <div className={'absolute right-0 top-0'}>
+      <div className={'absolute right-0 top-0 p-4 mx-4'}>
         <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </div>
       <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
