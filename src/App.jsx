@@ -80,74 +80,34 @@ const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSec
     </section>
   );
 };
-const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
+const Education = ({
+  educationItems,
+  formOnSubmitCb,
+  currentOpenSection,
+  deleteEducationItem,
+  valueOfInputsInForm,
+  toggleOpenThisSection,
+  resetValueOfInputsInForm,
+  updateValueOfInputsInForm,
+  toggleHiddenEducationItem,
+}) => {
   const isThisSectionOpened = currentOpenSection === 'education';
-  // interact with value of inputs in form
-  const [valueOfInputsInForm, setValueOfInputsInForm] = useState({ school: '', degree: '', startDate: '', endDate: '', location: '' });
-  const resetValueOfInputsInForm = () => setValueOfInputsInForm({ school: '', degree: '', startDate: '', endDate: '', location: '' });
-  const updateValueOfInputsInForm = (type, value) => setValueOfInputsInForm({ ...valueOfInputsInForm, [type]: value });
   // toggle display form or a list of education items
   const [isDisplayForm, setIsDisplayForm] = useState(false);
   const updateIsDisplayForm = () => {
     resetValueOfInputsInForm();
     setIsDisplayForm(!isDisplayForm);
   };
-  // add item to education items list on form submit and delete when click button on displayed item
-  const [educationItems, setEducationItems] = useState([
-    {
-      degree: 'Bachelor',
-      isHidden: false,
-      endDate: 'Dec 2023',
-      startDate: 'Sep 2019',
-      location: 'Ho Chi Minh, Viet Nam',
-      school: 'Hochiminh College Economy',
-      id: uuid(),
-    },
-    {
-      degree: 'Hidden Degree',
-      isHidden: true,
-      endDate: 'Hidden end date',
-      startDate: 'Hidden start date',
-      location: 'Hidden Location',
-      school: 'Hidden University',
-      id: uuid(),
-    },
-    {
-      degree: 'Bachelor',
-      isHidden: false,
-      endDate: 'Dec 2023',
-      startDate: 'Sep 2019',
-      location: 'Ho Chi Minh, Viet Nam',
-      school: 'Hochiminh College Economy',
-      id: uuid(),
-    },
-    {
-      degree: 'Hidden Degree',
-      isHidden: true,
-      endDate: 'Hidden end date',
-      startDate: 'Hidden start date',
-      location: 'Hidden Location',
-      school: '123 123 123 123 123 123 123 123 123 123 123 ',
-      id: uuid(),
-    },
-  ]);
-  const formOnSubmitCb = (e) => {
-    e.preventDefault();
-    updateIsDisplayForm();
-    setEducationItems([...educationItems, { ...valueOfInputsInForm, id: uuid(), isHidden: false }]);
-    resetValueOfInputsInForm();
-  };
-  const toggleHiddenEducationItem = (toggledId) => {
-    // TODO BUG
-  };
-  const deleteEducationItem = (deletedId) => {
-    setEducationItems(educationItems.filter((item) => item.id !== deletedId));
-  };
   // choose to display form or a list of education items
   let JSXToDisplayInThisSection;
   if (isDisplayForm) {
     JSXToDisplayInThisSection = (
-      <form onSubmit={formOnSubmitCb}>
+      <form
+        onSubmit={(e) => {
+          formOnSubmitCb(e);
+          updateIsDisplayForm();
+        }}
+      >
         <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} />
@@ -221,10 +181,79 @@ export const App = () => {
   const updatePersonalInfoOnInputChange = (type, value) => setPersonalInfo({ ...personalInfo, [type]: value });
 
   // state to store and change education section's values
+  // interact with value of inputs in form in education
+  const [valueOfInputsInFormInEducation, setValueOfInputsInFormInEducation] = useState({ school: '', degree: '', startDate: '', endDate: '', location: '' });
+  const resetValueOfInputsInFormInEducation = () => setValueOfInputsInFormInEducation({ school: '', degree: '', startDate: '', endDate: '', location: '' });
+  const updateValueOfInputsInFormInEducation = (type, value) => setValueOfInputsInFormInEducation({ ...valueOfInputsInFormInEducation, [type]: value });
+  // add item to education items list on form submit and delete when click button on displayed item
+  const [educationItems, setEducationItems] = useState([
+    {
+      degree: 'Bachelor',
+      isHidden: false,
+      endDate: 'Dec 2023',
+      startDate: 'Sep 2019',
+      location: 'Ho Chi Minh, Viet Nam',
+      school: 'Hochiminh College Economy',
+      id: uuid(),
+    },
+    {
+      degree: 'Hidden Degree',
+      isHidden: true,
+      endDate: 'Hidden end date',
+      startDate: 'Hidden start date',
+      location: 'Hidden Location',
+      school: 'Hidden University',
+      id: uuid(),
+    },
+    {
+      degree: 'Bachelor',
+      isHidden: false,
+      endDate: 'Dec 2023',
+      startDate: 'Sep 2019',
+      location: 'Ho Chi Minh, Viet Nam',
+      school: 'Hochiminh College Economy',
+      id: uuid(),
+    },
+    {
+      degree: 'Hidden Degree',
+      isHidden: true,
+      endDate: 'Hidden end date',
+      startDate: 'Hidden start date',
+      location: 'Hidden Location',
+      school: '123 123 123 123 123 123 123 123 123 123 123 ',
+      id: uuid(),
+    },
+  ]);
+  const formOnSubmitCbInEducation = (e) => {
+    e.preventDefault();
+    setEducationItems([...educationItems, { ...valueOfInputsInFormInEducation, id: uuid(), isHidden: false }]);
+    resetValueOfInputsInFormInEducation();
+  };
+  const toggleHiddenEducationItemInEducation = (toggledId) => {
+    setEducationItems(
+      educationItems.map((item) => {
+        if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
+        return { ...item };
+      })
+    );
+  };
+  const deleteEducationItemInEducation = (deletedId) => {
+    setEducationItems(educationItems.filter((item) => item.id !== deletedId));
+  };
   return (
     <main id="wrapper" className="min-h-screen">
       <Personal {...personalInfo} inputOnChangeCb={updatePersonalInfoOnInputChange} currentOpenSection={currentOpenSection} toggleOpenThisSection={() => updateCurrentOpenSection('personal')} />
-      <Education currentOpenSection={currentOpenSection} toggleOpenThisSection={() => updateCurrentOpenSection('education')} />
+      <Education
+        currentOpenSection={currentOpenSection}
+        toggleOpenThisSection={() => updateCurrentOpenSection('education')}
+        valueOfInputsInForm={valueOfInputsInFormInEducation}
+        updateValueOfInputsInForm={updateValueOfInputsInFormInEducation}
+        resetValueOfInputsInForm={resetValueOfInputsInFormInEducation}
+        educationItems={educationItems}
+        formOnSubmitCb={formOnSubmitCbInEducation}
+        toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
+        deleteEducationItem={deleteEducationItemInEducation}
+      />
       <Display {...personalInfo} />
     </main>
   );
