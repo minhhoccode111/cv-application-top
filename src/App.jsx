@@ -6,17 +6,18 @@ import './App.css';
 import 'animate.css';
 // import { Input } from './components/Input';
 // import { ToggleButton } from './components/ToggleButton';
-const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, required, placeholder }) => {
+const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, placeholder }) => {
   return (
     <label className="flex flex-col font-bold gap-1 p-2 ">
-      {label} {required ? '(*)' : null}
+      {label} (*)
       <input
         placeholder={placeholder}
+        // onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
         onChange={(e) => inputOnChangeCb(infoType, e.target.value)}
         value={value}
         type={inputType}
         className="px-3 focus:shadow-lg bg-light focus:bg-transparent font-light py-1 rounded-lg outline-none border border-transparent focus:border-dark"
-        required={required}
+        required
       />
     </label>
   );
@@ -39,6 +40,7 @@ const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
 const Display = ({ name, email, phone, address }) => {
   return (
     <section className="my-4 mx-auto max-w-4xl shadow-lg">
+      {/* header in display section is based on personal's info */}
       <header className={'px-4 bg-darker text-pink' + ' ' + (name === '' ? 'py-11' : 'py-6')}>
         <h1 className="text-center text-4xl">{name}</h1>
         <h2 className="py-2 flex items-center justify-center gap-2 text-xl">
@@ -54,6 +56,7 @@ const Display = ({ name, email, phone, address }) => {
           {address}
         </h2>
       </header>
+      {/*  */}
       <div className={'p-4'}></div>
     </section>
   );
@@ -68,25 +71,47 @@ const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSec
       <div className={'absolute right-0 top-0'}>
         <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </div>
-      <div className={'' + ' ' + (isThisSectionOpened ? 'block' : ' hidden')}>
-        <Input required={true} placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} inputOnChangeCb={inputOnChangeCb} />
-        <Input required={true} placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} inputOnChangeCb={inputOnChangeCb} />
-        <Input required={true} placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} inputOnChangeCb={inputOnChangeCb} />
-        <Input required={true} placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} inputOnChangeCb={inputOnChangeCb} />
+      <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>
+        <Input placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} inputOnChangeCb={inputOnChangeCb} />
+        <Input placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} inputOnChangeCb={inputOnChangeCb} />
+        <Input placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} inputOnChangeCb={inputOnChangeCb} />
+        <Input placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} inputOnChangeCb={inputOnChangeCb} />
       </div>
     </section>
   );
 };
 const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
-  const isSectionOpen = currentOpenSection === 'education';
-  const [isAddingItem, setIsAddingItem] = useState(true);
-  const updateShowForm = () => {
-    setIsAddingItem(!isAddingItem);
+  const isThisSectionOpened = currentOpenSection === 'education';
+  // interact with value of inputs in form
+  const [valueOfInputsInForm, setValueOfInputsInForm] = useState({ school: '', degree: '', startDate: '', endDate: '', location: '' });
+  const resetValueOfInputsInForm = () => setValueOfInputsInForm({ school: '', degree: '', startDate: '', endDate: '', location: '' });
+  const updateValueOfInputsInForm = (type, value) => setValueOfInputsInForm({ ...valueOfInputsInForm, [type]: value });
+  // toggle display form or a list of education items
+  const [isDisplayForm, setIsDisplayForm] = useState(true);
+  const updateIsDisplayForm = () => {
+    resetValueOfInputsInForm();
+    setIsDisplayForm(!isDisplayForm);
   };
-  const [formInfo, setFormInfo] = useState({ school: '', degree: '', startDate: '', endDate: '', location: '' });
-  const resetFormInfo = () => setFormInfo({ school: '', degree: '', startDate: '', endDate: '', location: '' });
-  const updateInputInForm = (type, value) => setFormInfo({ ...formInfo, [type]: value });
-  const [educationInfo, setEducationInfo] = useState([
+  // add item to education items list on form submit and delete when click button on displayed item
+  const [educationItems, setEducationItems] = useState([
+    {
+      degree: 'Bachelor',
+      isHidden: false,
+      endDate: 'Dec 2023',
+      startDate: 'Sep 2019',
+      location: 'Ho Chi Minh, Viet Nam',
+      school: 'Hochiminh College Economy',
+      id: uuid(),
+    },
+    {
+      degree: 'Hidden Degree',
+      isHidden: true,
+      endDate: 'Hidden end date',
+      startDate: 'Hidden start date',
+      location: 'Hidden Location',
+      school: 'Hidden University',
+      id: uuid(),
+    },
     {
       degree: 'Bachelor',
       isHidden: false,
@@ -106,24 +131,27 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
       id: uuid(),
     },
   ]);
-  const formSubmit = (e) => {
+  const formOnSubmitCb = (e) => {
     e.preventDefault();
-    updateShowForm();
-    setEducationInfo([...educationInfo, { ...formInfo, id: uuid(), isHidden: false }]);
-    resetFormInfo();
+    updateIsDisplayForm();
+    setEducationItems([...educationItems, { ...valueOfInputsInForm, id: uuid(), isHidden: false }]);
+    resetValueOfInputsInForm();
   };
-  const handleDelete = (deletedId) => {};
-  let JSXToDisplay;
-  if (isAddingItem) {
-    JSXToDisplay = (
-      <form action="#" onSubmit={formSubmit}>
-        <Input required={true} placeholder={'Enter School / University'} label={'School'} value={formInfo.school} infoType={'school'} inputOnChangeCb={updateInputInForm} />
-        <Input required={true} placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={formInfo.degree} infoType={'degree'} inputOnChangeCb={updateInputInForm} />
-        <Input required={true} placeholder={'Enter Start Date'} label={'Start Date'} value={formInfo.startDate} infoType={'startDate'} inputOnChangeCb={updateInputInForm} />
-        <Input required={true} placeholder={'Enter End Date'} label={'End Date'} value={formInfo.endDate} infoType={'endDate'} inputOnChangeCb={updateInputInForm} />
-        <Input required={true} placeholder={'Enter Location'} label={'Location'} value={formInfo.location} infoType={'location'} inputOnChangeCb={updateInputInForm} />
+  const deleteEducationItemWithSameId = (deletedId) => {
+    setEducationItems(educationItems.filter((item) => item.id !== deletedId));
+  };
+  // choose to display form or a list of education items
+  let JSXToDisplayInThisSection;
+  if (isDisplayForm) {
+    JSXToDisplayInThisSection = (
+      <form onSubmit={formOnSubmitCb}>
+        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} />
         <div className="flex justify-evenly px-2 py-4">
-          <button className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-xl py-2 px-4 border border-darker'} onClick={updateShowForm}>
+          <button className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-xl py-2 px-4 border border-darker'} onClick={updateIsDisplayForm} type="button">
             Cancel
           </button>
           <button className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-green hover:shadow-xl py-2 px-4 border border-darker'} type="submit">
@@ -133,16 +161,19 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
       </form>
     );
   } else {
-    JSXToDisplay = (
+    JSXToDisplayInThisSection = (
       <div className="">
         <ul>
-          {educationInfo.map((info) => (
+          {educationItems.map((info) => (
             <li key={info.id}>
               <p>{info.school}</p>
+              <button onClick={() => deleteEducationItemWithSameId(info.id)}>
+                <Icon.Delete />
+              </button>
             </li>
           ))}
         </ul>
-        <button onClick={updateShowForm}>add new section</button>
+        <button onClick={updateIsDisplayForm}>add new section</button>
       </div>
     );
   }
@@ -152,9 +183,9 @@ const Education = ({ toggleOpenThisSection, currentOpenSection }) => {
         <Icon.Education height={'34px'} width={'34px'} /> Education
       </h1>
       <div className={'absolute right-0 top-0'}>
-        <ToggleButton isOpen={isSectionOpen} buttonOnClickCb={toggleOpenThisSection} />
+        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </div>
-      <div className={'' + (isSectionOpen ? ' block' : ' hidden')}>{JSXToDisplay}</div>
+      <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
   );
 };
