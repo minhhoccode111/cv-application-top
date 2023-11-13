@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import * as Icon from './components/Icons';
@@ -151,6 +150,9 @@ export const App = () => {
     <>
       <header className="p-12 bg-dark text-light flex items-baseline justify-between">
         <h1 className="text-4xl md:text-5xl lg:text-6xl">CV Application</h1>
+        <div className="w-10 cursor-pointer focus:scale-125 hover:scale-125 transition-transform" tabIndex={0}>
+          <Icon.CVImage styles={{ borderRadius: '10px' }} />
+        </div>
         <a href="https://github.com/minhhoccode111/cv-application-top" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 underline hover:no-underline">
           <Icon.Github color="#fff" width="30px" height="30px" />
           <p>View on Github</p>

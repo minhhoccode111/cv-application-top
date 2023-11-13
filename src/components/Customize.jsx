@@ -6,13 +6,11 @@ const Customize = ({ currentOpenSection, toggleOpenThisSection, loadExample, cle
   const isThisSectionOpened = currentOpenSection === 'customize';
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
-      <header tabIndex={0} className="p-4 cursor-pointer" onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+      <header tabIndex={0} className="p-4 cursor-pointer flex items-center justify-between" onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
           <Icon.Customize height={'34px'} width={'34px'} /> Customize
         </h1>
-        <div className={'absolute right-0 top-0 p-4 mx-4'}>
-          <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
-        </div>
+        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>
         <div className="flex items-center justify-evenly">

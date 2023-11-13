@@ -74,13 +74,11 @@ const Experience = ({
   }
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
-      <header className="p-4 cursor-pointer" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+      <header className="p-4 cursor-pointer flex items-center justify-between" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
           <Icon.Experience height={'34px'} width={'34px'} /> Experience
         </h1>
-        <div className={'absolute right-0 top-0 p-4 mx-4'}>
-          <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
-        </div>
+        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
