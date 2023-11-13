@@ -1,18 +1,20 @@
 /* eslint-disable react/prop-types */
-import { Up, Down, Show, Hide } from './Icons';
+import * as Icon from './Icons';
 
-export const ToggleButton = ({ handleChange, isOpen, iconType = 'arrow' }) => {
+const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
   if (iconType === 'arrow') {
     return (
-      <button type="button" onClick={handleChange} className={'p-4 mx-4 my-1'}>
-        {isOpen ? <Up color="#132043" height={'30px'} width={'30px'} /> : <Down color="#132043" height={'30px'} width={'30px'} />}
+      <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
+        {isOpen ? <Icon.Up color="#132043" height={'30px'} width={'30px'} /> : <Icon.Down color="#132043" height={'30px'} width={'30px'} />}
       </button>
     );
   } else {
     return (
-      <button type="button" onClick={handleChange} className={'p-4 mx-4 my-1'}>
-        {isOpen ? <Show color="#132043" height={'30px'} width={'30px'} /> : <Hide color="#132043" height={'30px'} width={'30px'} />}
+      <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
+        {isOpen ? <Icon.Hide color="#132043" height={'30px'} width={'30px'} /> : <Icon.Show color="#132043" height={'30px'} width={'30px'} />}
       </button>
     );
   }
 };
+
+export default ToggleButton;
