@@ -56,6 +56,7 @@ const Display = ({ name, email, phone, address, educationItems }) => {
           {address}
         </h2>
       </header>
+      {/* display education section */}
       <article className={'pt-8 px-8 pb-2'}>
         <header className="bg-light m-2">
           <h2 className="text-center text-2xl p-2">Education</h2>
@@ -84,6 +85,7 @@ const Display = ({ name, email, phone, address, educationItems }) => {
           })}
         </div>
       </article>
+      {/* display experience section */}
       <article className={'pt-2 pb-8 px-8'}>
         <header className="bg-light m-2">
           <h2 className="text-center text-2xl p-2">Professional Experience</h2>
@@ -95,14 +97,16 @@ const Display = ({ name, email, phone, address, educationItems }) => {
 const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSection, toggleOpenThisSection }) => {
   const isThisSectionOpened = currentOpenSection === 'personal';
   return (
-    <section className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-      <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-        <Icon.Personal height={'34px'} width={'34px'} /> Personal
-      </h1>
-      <div className={'absolute right-0 top-0 p-4 mx-4'}>
-        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
-      </div>
-      <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>
+    <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+      <header tabIndex={0} className="p-4 cursor-pointer" onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+          <Icon.Personal height={'34px'} width={'34px'} /> Personal
+        </h1>
+        <div className={'absolute right-0 top-0 p-4 mx-4'}>
+          <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        </div>
+      </header>
+      <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>
         <Input placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} inputOnChangeCb={inputOnChangeCb} />
         <Input placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} inputOnChangeCb={inputOnChangeCb} />
         <Input placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} inputOnChangeCb={inputOnChangeCb} />
@@ -186,14 +190,104 @@ const Education = ({
     );
   }
   return (
-    <section className="p-4 shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
-      <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-        <Icon.Education height={'34px'} width={'34px'} /> Education
-      </h1>
-      <div className={'absolute right-0 top-0 p-4 mx-4'}>
-        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+    <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+      <header className="p-4 cursor-pointer" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+          <Icon.Education height={'34px'} width={'34px'} /> Education
+        </h1>
+        <div className={'absolute right-0 top-0 p-4 mx-4'}>
+          <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        </div>
+      </header>
+      <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
+    </section>
+  );
+};
+const Experience = ({
+  experienceItems,
+  formOnSubmitCb,
+  currentOpenSection,
+  deleteEducationItem,
+  valueOfInputsInForm,
+  toggleOpenThisSection,
+  resetValueOfInputsInForm,
+  updateValueOfInputsInForm,
+  toggleHiddenEducationItem,
+}) => {
+  const isThisSectionOpened = currentOpenSection === 'experience';
+  // toggle display form or a list of experience items
+  const [isDisplayForm, setIsDisplayForm] = useState(false);
+  const updateIsDisplayForm = () => {
+    resetValueOfInputsInForm();
+    setIsDisplayForm(!isDisplayForm);
+  };
+  // choose to display form or a list of experience items
+  let JSXToDisplayInThisSection;
+  if (isDisplayForm) {
+    JSXToDisplayInThisSection = (
+      <form
+        onSubmit={(e) => {
+          formOnSubmitCb(e);
+          updateIsDisplayForm();
+        }}
+      >
+        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <div className="flex justify-evenly px-2 py-4">
+          <button
+            className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-md transition-colors rounded-lg hover:scale-105 py-2 px-4 border border-darker'}
+            onClick={updateIsDisplayForm}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-green hover:shadow-md transition-colors rounded-lg hover:scale-105 py-2 px-4 border border-darker'}
+            type="submit"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    );
+  } else {
+    JSXToDisplayInThisSection = (
+      <div className="">
+        <ul>
+          {experienceItems.map((item) => (
+            <li key={item.id} className="flex justify-between items-center py-4 text-lg">
+              <p>{item.school.length > 41 ? item.school.slice(0, 41) + '...' : item.school}</p>
+              <div className="flex items-center gap-2">
+                <ToggleButton iconType={'eye'} isOpen={item.isHidden} buttonOnClickCb={() => toggleHiddenEducationItem(item.id)} />
+                <button onClick={() => deleteEducationItem(item.id)}>
+                  <Icon.Delete color={'#a00'} width={'30px'} height={'30px'} />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="flex justify-center p-2">
+          <button onClick={updateIsDisplayForm} className="">
+            <Icon.Add width={'30px'} height={'30px'} />
+          </button>
+        </div>
       </div>
-      <div className={'' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
+    );
+  }
+  return (
+    <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
+      <header className="p-4 cursor-pointer" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+        <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
+          <Icon.Education height={'34px'} width={'34px'} /> Education
+        </h1>
+        <div className={'absolute right-0 top-0 p-4 mx-4'}>
+          <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        </div>
+      </header>
+      <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
   );
 };
@@ -261,6 +355,63 @@ export const App = () => {
   };
   const deleteEducationItemInEducation = (deletedId) => {
     setEducationItems(educationItems.filter((item) => item.id !== deletedId));
+  };
+  // state to store and change experience section's values
+  // interact with value of inputs in form in experience
+  const [valueOfInputsInFormInExperience, setValueOfInputsInFormInExperience] = useState({ companyName: '', positionTitle: '', startDate: '', endDate: '', location: '', description: '' });
+  const resetValueOfInputsInFormInExperience = () => setValueOfInputsInFormInExperience({ companyName: '', positionTitle: '', startDate: '', endDate: '', location: '', description: '' });
+  const updateValueOfInputsInFormInExperience = (type, value) => setValueOfInputsInFormInExperience({ ...valueOfInputsInFormInExperience, [type]: value });
+  // add item to education items list on form submit and delete when click button on displayed item
+  const [experienceItems, setExperienceItems] = useState([
+    {
+      companyName: 'Apple Corp',
+      positionTitle: 'Backend Engineer',
+      startDate: '1/2025',
+      endDate: 'Unknown',
+      location: 'Silicon Valley, CA',
+      description:
+        'As a Backend Engineer at Google Corp, I am responsible for designing and implementing scalable and high-performance server-side applications. Collaborating with cross-functional teams, I contribute to the development of robust and efficient backend systems, ensuring seamless integration with front-end components. My role involves optimizing database queries, implementing RESTful APIs, and addressing security considerations in application design. I actively participate in code reviews, stay updated on industry best practices, and contribute to the overall success of the engineering team.',
+      isHidden: false,
+      id: uuid(),
+    },
+    {
+      companyName: 'Netflix Corp',
+      positionTitle: 'Senior Backend Engineer',
+      startDate: '1/2026',
+      endDate: 'Unknown',
+      location: 'Seattle, WA',
+      description:
+        'At TechGiant, I served as a Senior Backend Engineer, leading the development of mission-critical server-side applications. My responsibilities included designing and implementing scalable architecture, optimizing database performance, and ensuring the reliability and security of backend systems. Collaborating closely with cross-functional teams, I played a key role in feature development and the integration of new technologies. Additionally, I conducted code reviews, mentored junior engineers, and contributed to the continuous improvement of development processes.',
+      isHidden: false,
+      id: uuid(),
+    },
+    {
+      companyName: 'Google Corp',
+      positionTitle: 'Backend Software Engineer',
+      startDate: '1/2027',
+      endDate: 'Unknown',
+      location: 'San Francisco, CA',
+      description:
+        'As a Backend Software Engineer at InnoTech Solutions, I contribute to the development of scalable and efficient server-side applications. Working in an agile environment, I collaborate with a dynamic team to design and implement robust backend solutions. My role involves optimizing database queries, building RESTful APIs, and ensuring the seamless integration of frontend and backend components. I actively participate in code refactoring, performance tuning, and troubleshooting to deliver high-quality software. Additionally, I stay updated on industry trends and incorporate best practices into the development lifecycle.',
+      isHidden: true,
+      id: uuid(),
+    },
+  ]);
+  const formOnSubmitCbInExperience = (e) => {
+    e.preventDefault();
+    setExperienceItems([...experienceItems, { ...valueOfInputsInFormInExperience, id: uuid(), isHidden: false }]);
+    resetValueOfInputsInFormInExperience();
+  };
+  const toggleHiddenExperienceItemInExperience = (toggledId) => {
+    setExperienceItems(
+      experienceItems.map((item) => {
+        if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
+        return { ...item };
+      })
+    );
+  };
+  const deleteExperienceItemInExperience = (deletedId) => {
+    setExperienceItems(educationItems.filter((item) => item.id !== deletedId));
   };
   return (
     <main id="wrapper" className="min-h-screen">
