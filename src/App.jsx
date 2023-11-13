@@ -37,7 +37,7 @@ const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
     );
   }
 };
-const Display = ({ name, email, phone, address, educationItems }) => {
+const Display = ({ name, email, phone, address, educationItems, experienceItems }) => {
   return (
     <section className="my-4 mx-auto max-w-4xl shadow-lg">
       {/* header in display section is based on personal's info */}
@@ -90,6 +90,33 @@ const Display = ({ name, email, phone, address, educationItems }) => {
         <header className="bg-light m-2">
           <h2 className="text-center text-2xl p-2">Professional Experience</h2>
         </header>
+        <div className="p-2">
+          {experienceItems.map((item) => {
+            if (item.isHidden) return null;
+            return (
+              <table key={item.id} className="p-2">
+                <tbody className="">
+                  <tr>
+                    <td className="w-44">
+                      {item.startDate} - {item.endDate}
+                    </td>
+                    <td>
+                      <strong>{item.companyName}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{item.location}</td>
+                    <td>{item.positionTitle}</td>
+                  </tr>
+                  <tr>
+                    <td>{null}</td>
+                    <td>{item.description}</td>
+                  </tr>
+                </tbody>
+              </table>
+            );
+          })}
+        </div>
       </article>
     </section>
   );
@@ -207,12 +234,12 @@ const Experience = ({
   experienceItems,
   formOnSubmitCb,
   currentOpenSection,
-  deleteEducationItem,
+  deleteExperienceItem,
   valueOfInputsInForm,
   toggleOpenThisSection,
   resetValueOfInputsInForm,
   updateValueOfInputsInForm,
-  toggleHiddenEducationItem,
+  toggleHiddenExperienceItem,
 }) => {
   const isThisSectionOpened = currentOpenSection === 'experience';
   // toggle display form or a list of experience items
@@ -231,11 +258,12 @@ const Experience = ({
           updateIsDisplayForm();
         }}
       >
-        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} />
-        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Company Name'} label={'Company Name'} value={valueOfInputsInForm.companyName} infoType={'companyName'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Position Title'} label={'Position Title'} value={valueOfInputsInForm.positionTitle} infoType={'positionTitle'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} />
         <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter Job Description'} label={'Description'} value={valueOfInputsInForm.description} infoType={'description'} inputOnChangeCb={updateValueOfInputsInForm} />
         <div className="flex justify-evenly px-2 py-4">
           <button
             className={'text-darker bg-white hover:bg-darker hover:text-white hover:shadow-red hover:shadow-md transition-colors rounded-lg hover:scale-105 py-2 px-4 border border-darker'}
@@ -259,10 +287,10 @@ const Experience = ({
         <ul>
           {experienceItems.map((item) => (
             <li key={item.id} className="flex justify-between items-center py-4 text-lg">
-              <p>{item.school.length > 41 ? item.school.slice(0, 41) + '...' : item.school}</p>
+              <p>{item.companyName.length > 41 ? item.companyName.slice(0, 41) + '...' : item.companyName}</p>
               <div className="flex items-center gap-2">
-                <ToggleButton iconType={'eye'} isOpen={item.isHidden} buttonOnClickCb={() => toggleHiddenEducationItem(item.id)} />
-                <button onClick={() => deleteEducationItem(item.id)}>
+                <ToggleButton iconType={'eye'} isOpen={item.isHidden} buttonOnClickCb={() => toggleHiddenExperienceItem(item.id)} />
+                <button onClick={() => deleteExperienceItem(item.id)}>
                   <Icon.Delete color={'#a00'} width={'30px'} height={'30px'} />
                 </button>
               </div>
@@ -281,7 +309,7 @@ const Experience = ({
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative">
       <header className="p-4 cursor-pointer" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
-          <Icon.Education height={'34px'} width={'34px'} /> Education
+          <Icon.Experience height={'34px'} width={'34px'} /> Experience
         </h1>
         <div className={'absolute right-0 top-0 p-4 mx-4'}>
           <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
@@ -313,30 +341,30 @@ export const App = () => {
   // add item to education items list on form submit and delete when click button on displayed item
   const [educationItems, setEducationItems] = useState([
     {
-      degree: 'Bachelors in Economics',
-      isHidden: false,
-      endDate: '12/2023',
-      startDate: '9/2019',
-      location: 'Ho Chi Minh, VN',
       school: 'Hochiminh College Economy',
+      degree: 'Bachelors in Economics',
+      location: 'Ho Chi Minh, VN',
+      startDate: '9/2019',
+      endDate: '12/2023',
+      isHidden: false,
       id: uuid(),
     },
     {
       degree: `Master's Degree in Computer Science`,
-      isHidden: false,
-      endDate: 'now',
-      startDate: '1/2001',
       location: 'Hidden Location',
       school: 'Hidden University',
+      startDate: '1/2001',
+      isHidden: false,
+      endDate: 'now',
       id: uuid(),
     },
     {
       degree: `Master's Degree in Math`,
-      isHidden: true,
-      endDate: 'Unknown',
-      startDate: 'Unknown',
+      school: 'Hidden University',
       location: 'Unknown Location',
-      school: '123 123 123 123 123 123 123 123 123 123 123 ',
+      startDate: 'Unknown',
+      endDate: 'Unknown',
+      isHidden: true,
       id: uuid(),
     },
   ]);
@@ -427,7 +455,18 @@ export const App = () => {
         toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
         toggleOpenThisSection={() => updateCurrentOpenSection('education')}
       />
-      <Display {...personalInfo} educationItems={educationItems} />
+      <Experience
+        experienceItems={experienceItems}
+        currentOpenSection={currentOpenSection}
+        formOnSubmitCb={formOnSubmitCbInExperience}
+        deleteExperienceItem={deleteExperienceItemInExperience}
+        valueOfInputsInForm={valueOfInputsInFormInExperience}
+        resetValueOfInputsInForm={resetValueOfInputsInFormInExperience}
+        updateValueOfInputsInForm={updateValueOfInputsInFormInExperience}
+        toggleHiddenExperienceItem={toggleHiddenExperienceItemInExperience}
+        toggleOpenThisSection={() => updateCurrentOpenSection('experience')}
+      />
+      <Display {...personalInfo} educationItems={educationItems} experienceItems={experienceItems} />
     </main>
   );
 };
