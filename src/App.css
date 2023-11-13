@@ -1,3 +1,40 @@
 html {
-  /* background-color: black; */
+  background-color: rgb(249, 249, 249);
+}
+
+span.loading {
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #132043;
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+  animation: spinner3 800ms ease infinite;
+}
+
+@keyframes spinner3 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button.shadow-custom {
+  color: #132043;
+  background-color: #ffffff;
+  border: 1px solid #132043;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  /* height: 32px; */
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+.shadow-custom:hover,
+.shadow-custom:focus {
+  box-shadow:
+    1px 1px #1f4172,
+    2px 2px #1f4172,
+    3px 3px #1f4172;
+  transform: translateX(-3px);
 }
