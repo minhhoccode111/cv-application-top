@@ -8,7 +8,7 @@ This project was part of The Odin Project's JavaScript curriculum. The main goal
 
 ## 🚀 Demo
 
-[This project live demo](https://minhhoccode111.github.io/cv-application-top/)  
+[This project live demo](https://cv-application-top.netlify.app/)  
 [All projects' live demos](https://minhhoccode111.github.io/all-projects-live-demos/)
 
 ## 📘 What I have learned
@@ -16,7 +16,7 @@ This project was part of The Odin Project's JavaScript curriculum. The main goal
 - use favicon.io to generate multiple favicons from a `.png` file to use for my website
 - use react to custom `svg` by passing `props` like `height`, `width`, `color` to a `component` which will return and `svg`
 - prevent form submit using 'Enter' in input in React
-- a weird bug occur when my form has 2 buttons: 1 button `type='submit'` and 1 button doesn't set `type` and when I press 'Enter' within the form's input, a weird warning say `form submission canceled because the form is not connected` and all my form constrant is ignored (mean `input` with `required` has been ignored and the form just cancel). And this bug can be addressed when I add `type='button'` the other button and everything work normal
+- a weird bug occur when my form has 2 buttons: 1 button `type='submit'` and 1 button doesn't set `type` and when I press 'Enter' within the form's input, a weird warning say `form submission canceled because the form is not connected` and all my form constraint is ignored (mean `input` with `required` has been ignored and the form just cancel). And this bug can be addressed when I add `type='button'` the other button and everything work normal
 - passing callback deep many layer of components
 - ReactJs combine with custom Image in a dynamic way
 
