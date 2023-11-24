@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import * as Icon from './Icons';
 
-const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
+const ToggleButton = ({ buttonOnClickCb, isOpen, iconType }) => {
   if (iconType === 'arrow') {
     return (
       <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
@@ -15,6 +15,16 @@ const ToggleButton = ({ buttonOnClickCb, isOpen, iconType = 'arrow' }) => {
       </button>
     );
   }
+};
+
+ToggleButton.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  iconType: PropTypes.string,
+  buttonOnClickCb: PropTypes.func.isRequired,
+};
+
+ToggleButton.defaultProps = {
+  iconType: 'arrow',
 };
 
 export default ToggleButton;

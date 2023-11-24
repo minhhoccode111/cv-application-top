@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
 
@@ -30,6 +30,13 @@ const Customize = ({ currentOpenSection, toggleOpenThisSection, loadExample, cle
       </div>
     </section>
   );
+};
+
+Customize.propTypes = {
+  currentOpenSection: PropTypes.string,
+  toggleOpenThisSection: PropTypes.func.isRequired,
+  loadExample: PropTypes.func.isRequired,
+  clearResume: PropTypes.func.isRequired,
 };
 
 export default Customize;

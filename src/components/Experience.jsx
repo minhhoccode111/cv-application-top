@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
@@ -83,6 +83,18 @@ const Experience = ({
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
   );
+};
+
+Experience.propTypes = {
+  experienceItems: PropTypes.array.isRequired,
+  formOnSubmitCb: PropTypes.func.isRequired,
+  currentOpenSection: PropTypes.string,
+  deleteExperienceItem: PropTypes.func.isRequired,
+  valueOfInputsInForm: PropTypes.object.isRequired,
+  toggleOpenThisSection: PropTypes.func.isRequired,
+  resetValueOfInputsInForm: PropTypes.func.isRequired,
+  updateValueOfInputsInForm: PropTypes.func.isRequired,
+  toggleHiddenExperienceItem: PropTypes.func.isRequired,
 };
 
 export default Experience;

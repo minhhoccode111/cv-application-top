@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import * as Icon from './Icons';
 const Display = ({ name, email, phone, address, educationItems, experienceItems }) => {
   const JSXEducation = educationItems.length !== 0 && educationItems.some((item) => !item.isHidden) && (
@@ -89,6 +89,15 @@ const Display = ({ name, email, phone, address, educationItems, experienceItems 
       <article className={'pt-2 pb-8 px-8'}>{JSXExperience}</article>
     </section>
   );
+};
+
+Display.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  educationItems: PropTypes.array.isRequired,
+  experienceItems: PropTypes.array.isRequired,
 };
 
 export default Display;

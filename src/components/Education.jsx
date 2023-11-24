@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
@@ -82,6 +82,18 @@ const Education = ({
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
   );
+};
+
+Education.propTypes = {
+  educationItems: PropTypes.array.isRequired,
+  formOnSubmitCb: PropTypes.func.isRequired,
+  currentOpenSection: PropTypes.string,
+  deleteEducationItem: PropTypes.func.isRequired,
+  valueOfInputsInForm: PropTypes.object.isRequired,
+  toggleOpenThisSection: PropTypes.func.isRequired,
+  resetValueOfInputsInForm: PropTypes.func.isRequired,
+  updateValueOfInputsInForm: PropTypes.func.isRequired,
+  toggleHiddenEducationItem: PropTypes.func.isRequired,
 };
 
 export default Education;

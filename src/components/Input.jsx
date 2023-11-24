@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, placeholder }) => {
   return (
     <label className="flex flex-col font-bold gap-1 p-2 ">
@@ -14,6 +14,15 @@ const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, pl
       />
     </label>
   );
+};
+
+Input.propTypes = {
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  infoType: PropTypes.string,
+  inputType: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  inputOnChangeCb: PropTypes.func.isRequired,
 };
 
 export default Input;

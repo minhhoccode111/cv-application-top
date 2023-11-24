@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
@@ -23,4 +23,13 @@ const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSec
   );
 };
 
+Personal.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  currentOpenSection: PropTypes.string,
+  address: PropTypes.string.isRequired,
+  inputOnChangeCb: PropTypes.func.isRequired,
+  toggleOpenThisSection: PropTypes.func.isRequired,
+};
 export default Personal;
