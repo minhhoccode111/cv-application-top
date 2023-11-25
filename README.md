@@ -35,6 +35,7 @@ const Image = ({width: '100%', style = {}}) => {
 - Vite
 - Bun
 - ReactJS
+- TypeScript
 - TailwindCSS
 - Animate.css
 - uuid

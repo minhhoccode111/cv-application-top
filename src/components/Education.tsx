@@ -2,9 +2,31 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
-const Education = ({
+export type EducationItem = {
+  school: string;
+  degree: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  isHidden: boolean;
+  id: string;
+};
+
+type EducationProps = {
+  educationItems: EducationItem[];
+  formOnSubmitCb: (e: FormEvent) => void;
+  currentOpenSection: string;
+  deleteEducationItem: (id: string) => void;
+  valueOfInputsInForm: EducationItem;
+  toggleOpenThisSection: () => void;
+  resetValueOfInputsInForm: () => void;
+  updateValueOfInputsInForm: (type: string, value: string) => void;
+  toggleHiddenEducationItem: (id: string) => void;
+};
+
+const Education: React.FC<EducationProps> = ({
   educationItems,
   formOnSubmitCb,
   currentOpenSection,
@@ -17,8 +39,8 @@ const Education = ({
 }) => {
   const isThisSectionOpened = currentOpenSection === 'education';
   // toggle display form or a list of education items
-  const [isDisplayForm, setIsDisplayForm] = useState(false);
-  const updateIsDisplayForm = () => {
+  const [isDisplayForm, setIsDisplayForm] = useState<boolean>(false);
+  const updateIsDisplayForm = (): void => {
     resetValueOfInputsInForm();
     setIsDisplayForm(!isDisplayForm);
   };
@@ -27,16 +49,16 @@ const Education = ({
   if (isDisplayForm) {
     JSXToDisplayInThisSection = (
       <form
-        onSubmit={(e) => {
+        onSubmit={(e: FormEvent): void => {
           formOnSubmitCb(e);
           updateIsDisplayForm();
         }}
       >
-        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} />
-        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} />
-        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} />
-        <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} />
-        <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} />
+        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
+        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
+        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
+        <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
+        <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
         <div className="flex justify-evenly px-2 py-4">
           <button className="shadow-custom" onClick={updateIsDisplayForm} type="button">
             Cancel
@@ -56,7 +78,7 @@ const Education = ({
               <p>{item.school.length > 41 ? item.school.slice(0, 41) + '...' : item.school}</p>
               <div className="flex items-center gap-2">
                 <ToggleButton iconType={'eye'} isOpen={item.isHidden} buttonOnClickCb={() => toggleHiddenEducationItem(item.id)} />
-                <button className="hover:scale-125 transition-transform" onClick={() => deleteEducationItem(item.id)}>
+                <button type="button" className="hover:scale-125 transition-transform" onClick={() => deleteEducationItem(item.id)}>
                   <Icon.Delete color={'#a00'} width={'30px'} height={'30px'} />
                 </button>
               </div>
@@ -64,7 +86,7 @@ const Education = ({
           ))}
         </ul>
         <div className="flex justify-center p-2">
-          <button className="hover:scale-125 transition-transform" onClick={updateIsDisplayForm}>
+          <button type="button" className="hover:scale-125 transition-transform" onClick={updateIsDisplayForm}>
             <Icon.Add width={'30px'} height={'30px'} />
           </button>
         </div>
@@ -73,11 +95,16 @@ const Education = ({
   }
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
-      <header className="p-4 cursor-pointer flex items-center justify-between" tabIndex={0} onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+      <header
+        className="p-4 cursor-pointer flex items-center justify-between"
+        tabIndex={0}
+        onClick={toggleOpenThisSection}
+        onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLHeadingElement).click()}
+      >
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
           <Icon.Education height={'34px'} width={'34px'} /> Education
         </h1>
-        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} iconType={'arrow'} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>{JSXToDisplayInThisSection}</div>
     </section>
@@ -87,9 +114,17 @@ const Education = ({
 Education.propTypes = {
   educationItems: PropTypes.array.isRequired,
   formOnSubmitCb: PropTypes.func.isRequired,
-  currentOpenSection: PropTypes.string,
+  currentOpenSection: PropTypes.string.isRequired,
   deleteEducationItem: PropTypes.func.isRequired,
-  valueOfInputsInForm: PropTypes.object.isRequired,
+  valueOfInputsInForm: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    school: PropTypes.string.isRequired,
+    degree: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    isHidden: PropTypes.bool.isRequired,
+  }).isRequired,
   toggleOpenThisSection: PropTypes.func.isRequired,
   resetValueOfInputsInForm: PropTypes.func.isRequired,
   updateValueOfInputsInForm: PropTypes.func.isRequired,

@@ -1,5 +1,13 @@
 import PropTypes from 'prop-types';
-const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, placeholder }) => {
+type InputProps = {
+  label: string;
+  inputType: string;
+  infoType: string;
+  inputOnChangeCb: (type: string, value: string) => void;
+  value: string;
+  placeholder: string;
+};
+const Input: React.FC<InputProps> = ({ label, inputType, infoType, inputOnChangeCb, value, placeholder }) => {
   return (
     <label className="flex flex-col font-bold gap-1 p-2 ">
       {label} (*)
@@ -19,7 +27,7 @@ const Input = ({ label, inputType = 'text', infoType, inputOnChangeCb, value, pl
 Input.propTypes = {
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  infoType: PropTypes.string,
+  infoType: PropTypes.string.isRequired,
   inputType: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   inputOnChangeCb: PropTypes.func.isRequired,

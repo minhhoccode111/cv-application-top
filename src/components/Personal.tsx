@@ -3,15 +3,25 @@ import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
 
-const Personal = ({ name, email, phone, address, inputOnChangeCb, currentOpenSection, toggleOpenThisSection }) => {
+type PersonalProps = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  inputOnChangeCb: (type: string, value: string) => void;
+  currentOpenSection: string;
+  toggleOpenThisSection: () => void;
+};
+
+const Personal: React.FC<PersonalProps> = ({ name, email, phone, address, inputOnChangeCb, currentOpenSection, toggleOpenThisSection }) => {
   const isThisSectionOpened = currentOpenSection === 'personal';
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
-      <header tabIndex={0} className="p-4 cursor-pointer flex items-center justify-between" onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && e.target.click()}>
+      <header tabIndex={0} className="p-4 cursor-pointer flex items-center justify-between" onClick={toggleOpenThisSection} onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLElement).click()}>
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
           <Icon.Personal height={'34px'} width={'34px'} /> Personal
         </h1>
-        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        <ToggleButton iconType={'arrow'} isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>
         <Input placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} inputOnChangeCb={inputOnChangeCb} />
@@ -27,8 +37,8 @@ Personal.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
-  currentOpenSection: PropTypes.string,
   address: PropTypes.string.isRequired,
+  currentOpenSection: PropTypes.string.isRequired,
   inputOnChangeCb: PropTypes.func.isRequired,
   toggleOpenThisSection: PropTypes.func.isRequired,
 };

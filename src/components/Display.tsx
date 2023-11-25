@@ -1,6 +1,17 @@
 import PropTypes from 'prop-types';
 import * as Icon from './Icons';
-const Display = ({ name, email, phone, address, educationItems, experienceItems }) => {
+import { EducationItem, ExperienceItem } from '../App';
+
+type DisplayProps = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  educationItems: EducationItem[];
+  experienceItems: ExperienceItem[];
+};
+
+const Display: React.FC<DisplayProps> = ({ name, email, phone, address, educationItems, experienceItems }) => {
   const JSXEducation = educationItems.length !== 0 && educationItems.some((item) => !item.isHidden) && (
     <>
       <header className="bg-light m-2">
