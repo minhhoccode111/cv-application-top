@@ -83,11 +83,11 @@ export const App = () => {
 
   // state to store and change which section is opened
   const [currentOpenSection, setCurrentOpenSection] = useState('personal');
-  const updateCurrentOpenSection = (newCurrentOpen) => (newCurrentOpen === currentOpenSection ? setCurrentOpenSection(null) : setCurrentOpenSection(newCurrentOpen));
+  const updateCurrentOpenSection = (newCurrentOpen: string): void => (newCurrentOpen === currentOpenSection ? setCurrentOpenSection('') : setCurrentOpenSection(newCurrentOpen));
 
   // state to store and change personal section's values
   const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
-  const updatePersonalInfoOnInputChange = (type, value) => setPersonalInfo({ ...personalInfo, [type]: value });
+  const updatePersonalInfoOnInputChange = (type: string, value: string): void => setPersonalInfo({ ...personalInfo, [type]: value });
 
   // state to store and change education section's values
   // interact with value of inputs in form in education
