@@ -22,20 +22,20 @@ const Customize: React.FC<CustomizeProps> = ({ currentOpenSection, toggleOpenThi
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-white">
           <Icon.Customize height={'34px'} width={'34px'} /> Customize
         </h1>
-        <ToggleButton isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
+        <ToggleButton iconType="arrow" isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>
         <div className="flex items-center justify-evenly">
-          <button className="flex items-center justify-center shadow-custom gap-2" onClick={clearResume}>
+          <button type="button" className="flex items-center justify-center shadow-custom gap-2" onClick={clearResume}>
             <Icon.Delete color={'#a00'} width={'30px'} height={'30px'} /> Clear Resume
           </button>
-          <button className="flex items-center justify-center shadow-custom gap-2" onClick={loadExample}>
+          <button type="button" className="flex items-center justify-center shadow-custom gap-2" onClick={loadExample}>
             <span className="loading"></span>
             Load Example
           </button>
         </div>
         <div className="flex items-center justify-center mt-2">
-          <button className="flex items-center justify-center shadow-custom gap-2">
+          <button type="button" className="flex items-center justify-center shadow-custom gap-2">
             <Icon.Download color={'#a00'} width={'30px'} height={'30px'} /> Download Resume
           </button>
         </div>
