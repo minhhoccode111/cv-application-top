@@ -116,7 +116,7 @@ const Experience: React.FC<ExperienceProps> = ({
           ))}
         </ul>
         <div className="flex justify-center p-2">
-          <button className="hover:scale-125 transition-transform" onClick={updateIsDisplayForm}>
+          <button type="button" className="hover:scale-125 transition-transform" onClick={updateIsDisplayForm}>
             <Icon.Add width={'30px'} height={'30px'} />
           </button>
         </div>

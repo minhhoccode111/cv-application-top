@@ -77,7 +77,7 @@ const Display: React.FC<DisplayProps> = ({ name, email, phone, address, educatio
     </>
   );
   return (
-    <section className="my-4 mx-auto max-w-4xl shadow-lg min-h-screen bg-white min-w-full">
+    <section id="display-cv" className="my-4 mx-auto max-w-4xl shadow-lg min-h-screen bg-white min-w-full">
       {/* header in display section is based on personal's info */}
       <header className={'px-4 bg-darker text-light' + ' ' + (name === '' ? 'py-11' : 'py-6')}>
         <h1 className="text-center text-4xl">{name}</h1>
