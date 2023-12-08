@@ -8,8 +8,15 @@ This project was part of The Odin Project's JavaScript curriculum. The main goal
 
 ## 🚀 Demo
 
-[This project live demo](https://cv-application-top.netlify.app/)  
+[This project live demo](https://cvapplicationtop.netlify.app/)
+
+## Navigation
+
 [All projects' live demos](https://minhhoccode111.github.io/all-projects-live-demos/)
+
+My previous project [Personal Portfolio](https://github.com/minhhoccode111/personal-portfolio/)
+
+My next project [Memory Card Game](https://github.com/minhhoccode111/memory-card-top/)
 
 ## 📘 What I have learned
 
