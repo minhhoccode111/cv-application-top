@@ -3,15 +3,13 @@ import * as Icon from './Icons';
 import { EducationItem, ExperienceItem } from '../App';
 
 type DisplayProps = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
   educationItems: EducationItem[];
   experienceItems: ExperienceItem[];
+  personalStates: any;
 };
 
-const Display: React.FC<DisplayProps> = ({ name, email, phone, address, educationItems, experienceItems }) => {
+const Display: React.FC<DisplayProps> = ({ educationItems, experienceItems, personalStates }) => {
+  const { name, email, phone, address } = personalStates;
   const JSXEducation = educationItems.length !== 0 && educationItems.some((item) => !item.isHidden) && (
     <>
       <header className="bg-light m-2">
@@ -103,10 +101,7 @@ const Display: React.FC<DisplayProps> = ({ name, email, phone, address, educatio
 };
 
 Display.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
+  personalStates: PropTypes.object.isRequired,
   educationItems: PropTypes.array.isRequired,
   experienceItems: PropTypes.array.isRequired,
 };

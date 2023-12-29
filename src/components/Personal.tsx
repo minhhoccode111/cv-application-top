@@ -4,16 +4,13 @@ import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
 
 type PersonalProps = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  inputOnChangeCb: (type: string, value: string) => void;
   currentOpenSection: string;
   toggleOpenThisSection: () => void;
+  personalStates: any;
+  personalDispatch: any;
 };
 
-const Personal: React.FC<PersonalProps> = ({ name, email, phone, address, inputOnChangeCb, currentOpenSection, toggleOpenThisSection }) => {
+const Personal: React.FC<PersonalProps> = ({ currentOpenSection, toggleOpenThisSection, personalStates, personalDispatch }) => {
   const isThisSectionOpened = currentOpenSection === 'personal';
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
@@ -24,22 +21,19 @@ const Personal: React.FC<PersonalProps> = ({ name, email, phone, address, inputO
         <ToggleButton iconType={'arrow'} isOpen={isThisSectionOpened} buttonOnClickCb={toggleOpenThisSection} />
       </header>
       <div className={'p-4' + (isThisSectionOpened ? ' block' : ' hidden')}>
-        <Input placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={name} inputOnChangeCb={inputOnChangeCb} />
-        <Input placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={email} inputOnChangeCb={inputOnChangeCb} />
-        <Input placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={phone} inputOnChangeCb={inputOnChangeCb} />
-        <Input placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={address} inputOnChangeCb={inputOnChangeCb} />
+        <Input placeholder={'First and last name'} infoType={'name'} label={'Full name'} inputType={'text'} value={personalStates.name} dispatch={personalDispatch} />
+        <Input placeholder={'Enter your email'} infoType={'email'} label={'Email'} inputType={'email'} value={personalStates.email} dispatch={personalDispatch} />
+        <Input placeholder={'Enter phone number'} infoType={'phone'} label={'Phone number'} inputType={'tel'} value={personalStates.phone} dispatch={personalDispatch} />
+        <Input placeholder={'City, Country'} infoType={'address'} label={'Address'} inputType={'text'} value={personalStates.address} dispatch={personalDispatch} />
       </div>
     </section>
   );
 };
 
 Personal.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
   currentOpenSection: PropTypes.string.isRequired,
-  inputOnChangeCb: PropTypes.func.isRequired,
   toggleOpenThisSection: PropTypes.func.isRequired,
+  personalStates: PropTypes.object.isRequired,
+  personalDispatch: PropTypes.func.isRequired,
 };
 export default Personal;
