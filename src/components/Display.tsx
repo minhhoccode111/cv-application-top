@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import * as Icon from './Icons';
-import { EducationItem, ExperienceItem } from '../App';
+import { EducationItem, ExperienceItem } from './../methods/types';
 
 type DisplayProps = {
   educationItems: EducationItem[];
@@ -8,7 +9,7 @@ type DisplayProps = {
   personalStates: any;
 };
 
-const Display: React.FC<DisplayProps> = ({ educationItems, experienceItems, personalStates }) => {
+const Display: React.FC<DisplayProps> = memo(({ educationItems, experienceItems, personalStates }) => {
   const { name, email, phone, address } = personalStates;
   const JSXEducation = educationItems.length !== 0 && educationItems.some((item) => !item.isHidden) && (
     <>
@@ -56,12 +57,12 @@ const Display: React.FC<DisplayProps> = ({ educationItems, experienceItems, pers
                     {item.startDate} - {item.endDate}
                   </td>
                   <td>
-                    <strong>{item.companyName}</strong>
+                    <strong>{item.company}</strong>
                   </td>
                 </tr>
                 <tr>
                   <td>{item.location}</td>
-                  <td>{item.positionTitle}</td>
+                  <td>{item.position}</td>
                 </tr>
                 <tr>
                   <td>{null}</td>
@@ -98,7 +99,7 @@ const Display: React.FC<DisplayProps> = ({ educationItems, experienceItems, pers
       <article className={'pt-2 pb-8 px-8'}>{JSXExperience}</article>
     </section>
   );
-};
+});
 
 Display.propTypes = {
   personalStates: PropTypes.object.isRequired,

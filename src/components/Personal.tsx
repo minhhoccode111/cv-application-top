@@ -1,16 +1,17 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import Input from './Input';
-import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
+import ToggleButton from './ToggleButton';
 
 type PersonalProps = {
-  currentOpenSection: string;
-  toggleOpenThisSection: () => void;
   personalStates: any;
   personalDispatch: any;
+  currentOpenSection: string;
+  toggleOpenThisSection: () => void;
 };
 
-const Personal: React.FC<PersonalProps> = ({ currentOpenSection, toggleOpenThisSection, personalStates, personalDispatch }) => {
+const Personal: React.FC<PersonalProps> = memo(({ currentOpenSection, toggleOpenThisSection, personalStates, personalDispatch }) => {
   const isThisSectionOpened = currentOpenSection === 'personal';
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
@@ -28,7 +29,7 @@ const Personal: React.FC<PersonalProps> = ({ currentOpenSection, toggleOpenThisS
       </div>
     </section>
   );
-};
+});
 
 Personal.propTypes = {
   currentOpenSection: PropTypes.string.isRequired,

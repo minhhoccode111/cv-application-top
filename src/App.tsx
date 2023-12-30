@@ -1,20 +1,23 @@
-import { FormEvent, useState, useMemo, useReducer } from 'react';
+import { FormEvent, useState, useCallback, useReducer } from 'react';
 import { v4 as uuid } from 'uuid';
 import * as Icon from './components/Icons';
 import './App.css';
 import Display from './components/Display';
 import Personal from './components/Personal';
 import Education from './components/Education';
-import Experience from './components/Experience';
 import Customize from './components/Customize';
+import Experience from './components/Experience';
 import { defaultPersonalInfo, defaultEducationItems, defaultExperienceItems } from './methods/default-values';
 import { personalReducer, educationReducer, experienceReducer } from './methods/reducers';
-import { PersonalInfo, EducationItem, ExperienceItem } from './methods/types';
+import { EducationItem, ExperienceItem } from './methods/types';
 
 export const App = () => {
   // state to store and change which section is opened
   const [currentOpenSection, setCurrentOpenSection] = useState<string>('personal');
-  const updateCurrentOpenSection = (newCurrentOpen: string): void => (newCurrentOpen === currentOpenSection ? setCurrentOpenSection('') : setCurrentOpenSection(newCurrentOpen));
+  const updateCurrentOpenSection = useCallback(
+    (newCurrentOpen: string): void => (newCurrentOpen === currentOpenSection ? setCurrentOpenSection('') : setCurrentOpenSection(newCurrentOpen)),
+    [currentOpenSection]
+  );
 
   // state to store and change personal section's values
   const [personalStates, personalDispatch] = useReducer(personalReducer, defaultPersonalInfo);
@@ -29,58 +32,79 @@ export const App = () => {
   });
   // add item to education items list on form submit and delete when click button on displayed item
   const [educationItems, setEducationItems] = useState<EducationItem[]>(defaultEducationItems);
-  const formOnSubmitCbInEducation = (e: FormEvent): void => {
-    e.preventDefault();
-    setEducationItems([...educationItems, { ...educationStates, id: uuid(), isHidden: false }]);
-    educationDispatch({ type: 'clear' });
-  };
+  const formOnSubmitCbInEducation = useCallback(
+    (e: FormEvent): void => {
+      e.preventDefault();
+      setEducationItems([...educationItems, { ...educationStates, id: uuid(), isHidden: false }]);
+      educationDispatch({ type: 'clear' });
+    },
+    [educationItems, educationStates]
+  );
 
-  const toggleHiddenEducationItemInEducation = (toggledId: string): void => {
-    setEducationItems(
-      educationItems.map((item) => {
-        if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
-        return { ...item };
-      })
-    );
-  };
+  const toggleHiddenEducationItemInEducation = useCallback(
+    (toggledId: string): void => {
+      setEducationItems(
+        educationItems.map((item) => {
+          if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
+          return { ...item };
+        })
+      );
+    },
+    [educationItems]
+  );
 
-  const deleteEducationItemInEducation = (deletedId: string): void => {
-    setEducationItems(educationItems.filter((item) => item.id !== deletedId));
-  };
+  const deleteEducationItemInEducation = useCallback(
+    (deletedId: string): void => {
+      setEducationItems(educationItems.filter((item) => item.id !== deletedId));
+    },
+    [educationItems]
+  );
+
   // state to store and change experience section's values
-  // interact with value of inputs in form in experience
-  const [valueOfInputsInFormInExperience, setValueOfInputsInFormInExperience] = useState({ companyName: '', positionTitle: '', startDate: '', endDate: '', location: '', description: '' });
-  const resetValueOfInputsInFormInExperience = (): void => setValueOfInputsInFormInExperience({ companyName: '', positionTitle: '', startDate: '', endDate: '', location: '', description: '' });
-  const updateValueOfInputsInFormInExperience = (type: string, value: string): void => setValueOfInputsInFormInExperience({ ...valueOfInputsInFormInExperience, [type]: value });
+  const [experienceStates, experienceDispatch] = useReducer(experienceReducer, { company: '', position: '', startDate: '', endDate: '', location: '', description: '' });
+
   // add item to education items list on form submit and delete when click button on displayed item
   const [experienceItems, setExperienceItems] = useState<ExperienceItem[]>(defaultExperienceItems);
-  const formOnSubmitCbInExperience = (e: FormEvent): void => {
-    e.preventDefault();
-    setExperienceItems([...experienceItems, { ...valueOfInputsInFormInExperience, id: uuid(), isHidden: false }]);
-    resetValueOfInputsInFormInExperience();
-  };
-  const toggleHiddenExperienceItemInExperience = (toggledId: string): void => {
-    setExperienceItems(
-      experienceItems.map((item) => {
-        if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
-        return { ...item };
-      })
-    );
-  };
-  const deleteExperienceItemInExperience = (deletedId: string): void => {
-    setExperienceItems(experienceItems.filter((item) => item.id !== deletedId));
-  };
+  const formOnSubmitCbInExperience = useCallback(
+    (e: FormEvent): void => {
+      e.preventDefault();
+      setExperienceItems([...experienceItems, { ...experienceStates, id: uuid(), isHidden: false }]);
+      experienceDispatch({ type: 'clear' });
+    },
+    [experienceItems, experienceStates]
+  );
+
+  const toggleHiddenExperienceItemInExperience = useCallback(
+    (toggledId: string): void => {
+      setExperienceItems(
+        experienceItems.map((item) => {
+          if (item.id === toggledId) return { ...item, isHidden: !item.isHidden };
+          return { ...item };
+        })
+      );
+    },
+    [experienceItems]
+  );
+
+  const deleteExperienceItemInExperience = useCallback(
+    (deletedId: string): void => {
+      setExperienceItems(experienceItems.filter((item) => item.id !== deletedId));
+    },
+    [experienceItems]
+  );
+
   // state to customize resume
-  const clearResume = (): void => {
+  const clearResume = useCallback((): void => {
     personalDispatch({ type: 'clear' });
     setEducationItems([]);
     setExperienceItems([]);
-  };
-  const loadExample = (): void => {
+  }, []);
+
+  const loadExample = useCallback((): void => {
     personalDispatch({ type: 'load' });
     setEducationItems(defaultEducationItems);
     setExperienceItems(defaultExperienceItems);
-  };
+  }, []);
   return (
     <>
       <header className="p-12 bg-dark text-light flex items-baseline justify-between">
@@ -99,22 +123,21 @@ export const App = () => {
           <Personal currentOpenSection={currentOpenSection} toggleOpenThisSection={() => updateCurrentOpenSection('personal')} personalStates={personalStates} personalDispatch={personalDispatch} />
           <Education
             educationItems={educationItems}
+            educationStates={educationStates}
+            educationDispatch={educationDispatch}
             currentOpenSection={currentOpenSection}
             formOnSubmitCb={formOnSubmitCbInEducation}
             deleteEducationItem={deleteEducationItemInEducation}
-            educationDispatch={educationDispatch}
-            educationStates={educationStates}
             toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
             toggleOpenThisSection={() => updateCurrentOpenSection('education')}
           />
           <Experience
             experienceItems={experienceItems}
+            experienceStates={experienceStates}
             currentOpenSection={currentOpenSection}
+            experienceDispatch={experienceDispatch}
             formOnSubmitCb={formOnSubmitCbInExperience}
             deleteExperienceItem={deleteExperienceItemInExperience}
-            valueOfInputsInForm={valueOfInputsInFormInExperience}
-            resetValueOfInputsInForm={resetValueOfInputsInFormInExperience}
-            updateValueOfInputsInForm={updateValueOfInputsInFormInExperience}
             toggleHiddenExperienceItem={toggleHiddenExperienceItemInExperience}
             toggleOpenThisSection={() => updateCurrentOpenSection('experience')}
           />

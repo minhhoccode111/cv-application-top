@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
+
 type InputProps = {
-  label: string;
-  inputType: string;
-  infoType: string;
-  value: string;
-  placeholder: string;
   dispatch: any;
+  label: string;
+  value: string;
+  infoType: string;
+  inputType: string;
+  placeholder: string;
 };
-const Input: React.FC<InputProps> = ({ label, inputType, infoType, value, placeholder, dispatch }) => {
+
+const Input: React.FC<InputProps> = memo(({ label, inputType, infoType, value, placeholder, dispatch }) => {
   return (
     <label className="flex flex-col font-bold gap-1 p-2 ">
       {label} (*)
       <input
         placeholder={placeholder}
-        // onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
-        // onChange={(e) => inputOnChangeCb(infoType, e.target.value)}
         onChange={(e) => dispatch({ type: infoType, value: e.target.value })}
         value={value}
         type={inputType}
@@ -23,7 +24,7 @@ const Input: React.FC<InputProps> = ({ label, inputType, infoType, value, placeh
       />
     </label>
   );
-};
+});
 
 Input.propTypes = {
   value: PropTypes.string.isRequired,

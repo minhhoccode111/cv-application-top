@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
-import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
+import ToggleButton from './ToggleButton';
 
 type CustomizeProps = {
   currentOpenSection: string;
@@ -9,7 +10,7 @@ type CustomizeProps = {
   clearResume: () => void;
 };
 
-const Customize: React.FC<CustomizeProps> = ({ currentOpenSection, toggleOpenThisSection, loadExample, clearResume }) => {
+const Customize: React.FC<CustomizeProps> = memo(({ currentOpenSection, toggleOpenThisSection, loadExample, clearResume }) => {
   const isThisSectionOpened = currentOpenSection === 'customize';
   return (
     <section className="shadow-md shadow-dark max-w-md mx-auto my-4 text-darker relative bg-white">
@@ -42,7 +43,7 @@ const Customize: React.FC<CustomizeProps> = ({ currentOpenSection, toggleOpenThi
       </div>
     </section>
   );
-};
+});
 
 Customize.propTypes = {
   currentOpenSection: PropTypes.string.isRequired,

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import * as Icon from './Icons';
+import { memo } from 'react';
 
 type ToggleButtonProps = {
   isOpen: boolean;
@@ -7,7 +8,7 @@ type ToggleButtonProps = {
   buttonOnClickCb: () => void;
 };
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ buttonOnClickCb, isOpen, iconType }) => {
+const ToggleButton: React.FC<ToggleButtonProps> = memo(({ buttonOnClickCb, isOpen, iconType }) => {
   if (iconType === 'arrow') {
     return (
       <button type="button" onClick={buttonOnClickCb} className={'my-1 transition-transform hover:scale-125'}>
@@ -21,7 +22,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ buttonOnClickCb, isOpen, ic
       </button>
     );
   }
-};
+});
 
 ToggleButton.propTypes = {
   isOpen: PropTypes.bool.isRequired,

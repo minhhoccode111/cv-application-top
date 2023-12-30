@@ -6,22 +6,22 @@ export type PersonalInfo = {
 };
 
 export type EducationItem = {
+  id: string;
   school: string;
   degree: string;
+  endDate: string;
   location: string;
   startDate: string;
-  endDate: string;
   isHidden: boolean;
-  id: string;
 };
 
 export type ExperienceItem = {
-  companyName: string;
-  positionTitle: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  description: string;
-  isHidden: boolean;
   id: string;
+  company: string;
+  endDate: string;
+  position: string;
+  location: string;
+  isHidden: boolean;
+  startDate: string;
+  description: string;
 };

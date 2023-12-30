@@ -40,8 +40,8 @@ export const defaultEducationItems: EducationItem[] = [
 
 export const defaultExperienceItems: ExperienceItem[] = [
   {
-    companyName: 'Apple Corp',
-    positionTitle: 'Backend Developer',
+    company: 'Apple Corp',
+    position: 'Backend Developer',
     startDate: '1/2025',
     endDate: 'Unknown',
     location: 'Silicon Valley, CA',
@@ -51,8 +51,8 @@ export const defaultExperienceItems: ExperienceItem[] = [
     id: uuid(),
   },
   {
-    companyName: 'Netflix Corp',
-    positionTitle: 'Senior Backend Developer',
+    company: 'Netflix Corp',
+    position: 'Senior Backend Developer',
     startDate: '1/2026',
     endDate: 'Unknown',
     location: 'Seattle, WA',
@@ -62,8 +62,8 @@ export const defaultExperienceItems: ExperienceItem[] = [
     id: uuid(),
   },
   {
-    companyName: 'Google Corp',
-    positionTitle: 'Backend Software Engineer',
+    company: 'Google Corp',
+    position: 'Backend Software Engineer',
     startDate: '1/2027',
     endDate: 'Unknown',
     location: 'San Francisco, CA',
