@@ -3,27 +3,17 @@ import Input from './Input';
 import ToggleButton from './ToggleButton';
 import * as Icon from './Icons';
 import { FormEvent, useState } from 'react';
-
-export type EducationItem = {
-  school: string;
-  degree: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  isHidden: boolean;
-  id: string;
-};
+import { EducationItem } from '../methods/types';
 
 type EducationProps = {
   educationItems: EducationItem[];
   formOnSubmitCb: (e: FormEvent) => void;
   currentOpenSection: string;
   deleteEducationItem: (id: string) => void;
-  valueOfInputsInForm: EducationItem;
   toggleOpenThisSection: () => void;
-  resetValueOfInputsInForm: () => void;
-  updateValueOfInputsInForm: (type: string, value: string) => void;
   toggleHiddenEducationItem: (id: string) => void;
+  educationDispatch: any;
+  educationStates: any;
 };
 
 const Education: React.FC<EducationProps> = ({
@@ -31,17 +21,15 @@ const Education: React.FC<EducationProps> = ({
   formOnSubmitCb,
   currentOpenSection,
   deleteEducationItem,
-  valueOfInputsInForm,
   toggleOpenThisSection,
-  resetValueOfInputsInForm,
-  updateValueOfInputsInForm,
+  educationDispatch,
+  educationStates,
   toggleHiddenEducationItem,
 }) => {
   const isThisSectionOpened = currentOpenSection === 'education';
   // toggle display form or a list of education items
   const [isDisplayForm, setIsDisplayForm] = useState<boolean>(false);
   const updateIsDisplayForm = (): void => {
-    resetValueOfInputsInForm();
     setIsDisplayForm(!isDisplayForm);
   };
   // choose to display form or a list of education items
@@ -54,11 +42,11 @@ const Education: React.FC<EducationProps> = ({
           updateIsDisplayForm();
         }}
       >
-        <Input placeholder={'Enter School / University'} label={'School'} value={valueOfInputsInForm.school} infoType={'school'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
-        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={valueOfInputsInForm.degree} infoType={'degree'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
-        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={valueOfInputsInForm.startDate} infoType={'startDate'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
-        <Input placeholder={'Enter End Date'} label={'End Date'} value={valueOfInputsInForm.endDate} infoType={'endDate'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
-        <Input placeholder={'Enter Location'} label={'Location'} value={valueOfInputsInForm.location} infoType={'location'} inputOnChangeCb={updateValueOfInputsInForm} inputType={'text'} />
+        <Input placeholder={'Enter School / University'} label={'School'} value={educationStates.school} infoType={'school'} dispatch={educationDispatch} inputType={'text'} />
+        <Input placeholder={'Enter Degree / Field of Study'} label={'Degree'} value={educationStates.degree} infoType={'degree'} dispatch={educationDispatch} inputType={'text'} />
+        <Input placeholder={'Enter Start Date'} label={'Start Date'} value={educationStates.startDate} infoType={'startDate'} dispatch={educationDispatch} inputType={'text'} />
+        <Input placeholder={'Enter End Date'} label={'End Date'} value={educationStates.endDate} infoType={'endDate'} dispatch={educationDispatch} inputType={'text'} />
+        <Input placeholder={'Enter Location'} label={'Location'} value={educationStates.location} infoType={'location'} dispatch={educationDispatch} inputType={'text'} />
         <div className="flex justify-evenly px-2 py-4">
           <button className="shadow-custom" onClick={updateIsDisplayForm} type="button">
             Cancel
@@ -116,18 +104,7 @@ Education.propTypes = {
   formOnSubmitCb: PropTypes.func.isRequired,
   currentOpenSection: PropTypes.string.isRequired,
   deleteEducationItem: PropTypes.func.isRequired,
-  valueOfInputsInForm: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    school: PropTypes.string.isRequired,
-    degree: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
-    isHidden: PropTypes.bool.isRequired,
-  }).isRequired,
   toggleOpenThisSection: PropTypes.func.isRequired,
-  resetValueOfInputsInForm: PropTypes.func.isRequired,
-  updateValueOfInputsInForm: PropTypes.func.isRequired,
   toggleHiddenEducationItem: PropTypes.func.isRequired,
 };
 

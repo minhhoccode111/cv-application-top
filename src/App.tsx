@@ -19,20 +19,7 @@ export const App = () => {
   // state to store and change personal section's values
   const [personalStates, personalDispatch] = useReducer(personalReducer, defaultPersonalInfo);
 
-  // state to store and change education section's values
-  // interact with value of inputs in form in education
-  // const [valueOfInputsInFormInEducation, setValueOfInputsInFormInEducation] = useState<EducationItem>({
-  //   school: '',
-  //   degree: '',
-  //   startDate: '',
-  //   endDate: '',
-  //   location: '',
-  //   isHidden: false,
-  //   id: uuid(),
-  // });
-  // const resetValueOfInputsInFormInEducation = (): void => setValueOfInputsInFormInEducation({ school: '', degree: '', startDate: '', endDate: '', location: '', isHidden: false, id: uuid() });
-
-  // const updateValueOfInputsInFormInEducation = (type: string, value: string): void => setValueOfInputsInFormInEducation({ ...valueOfInputsInFormInEducation, [type]: value });
+  // state to store and change education form values
   const [educationStates, educationDispatch] = useReducer(educationReducer, {
     school: '',
     degree: '',
@@ -44,10 +31,10 @@ export const App = () => {
   const [educationItems, setEducationItems] = useState<EducationItem[]>(defaultEducationItems);
   const formOnSubmitCbInEducation = (e: FormEvent): void => {
     e.preventDefault();
-    setEducationItems([...educationItems, { ...valueOfInputsInFormInEducation, id: uuid(), isHidden: false }]);
-    // resetValueOfInputsInFormInEducation();
+    setEducationItems([...educationItems, { ...educationStates, id: uuid(), isHidden: false }]);
     educationDispatch({ type: 'clear' });
   };
+
   const toggleHiddenEducationItemInEducation = (toggledId: string): void => {
     setEducationItems(
       educationItems.map((item) => {
@@ -56,6 +43,7 @@ export const App = () => {
       })
     );
   };
+
   const deleteEducationItemInEducation = (deletedId: string): void => {
     setEducationItems(educationItems.filter((item) => item.id !== deletedId));
   };
@@ -114,9 +102,8 @@ export const App = () => {
             currentOpenSection={currentOpenSection}
             formOnSubmitCb={formOnSubmitCbInEducation}
             deleteEducationItem={deleteEducationItemInEducation}
-            valueOfInputsInForm={valueOfInputsInFormInEducation}
-            resetValueOfInputsInForm={resetValueOfInputsInFormInEducation}
-            updateValueOfInputsInForm={updateValueOfInputsInFormInEducation}
+            educationDispatch={educationDispatch}
+            educationStates={educationStates}
             toggleHiddenEducationItem={toggleHiddenEducationItemInEducation}
             toggleOpenThisSection={() => updateCurrentOpenSection('education')}
           />
