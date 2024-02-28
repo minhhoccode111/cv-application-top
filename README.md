@@ -14,7 +14,7 @@ This project was part of The Odin Project's JavaScript curriculum. The main goal
 
 [All projects' live demos](https://minhhoccode111.github.io/all-projects-live-demos/)
 
-My previous project [Personal Portfolio](https://github.com/minhhoccode111/personal-portfolio/)
+My previous project [Personal Portfolio](https://github.com/minhhoccode111/homepage-top/)
 
 My next project [Memory Card Game](https://github.com/minhhoccode111/memory-card-top/)
 
