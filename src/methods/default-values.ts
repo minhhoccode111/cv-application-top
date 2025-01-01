@@ -3,18 +3,18 @@ import { PersonalInfo, EducationItem, ExperienceItem } from './types';
 
 // default content with useMemo so that it won't be re-create from scratch every re-render
 export const defaultPersonalInfo: PersonalInfo = {
-  name: 'Dang Hoang Minh',
+  name: 'hoang minh',
   email: 'minhhoccode111@gmail.com',
   phone: '+84 123123123',
-  address: 'District 10, Ho Chi Minh city, Viet Nam',
+  address: 'HCM, Viet Nam',
 };
 export const defaultEducationItems: EducationItem[] = [
   {
-    school: 'Hochiminh College Economy',
-    degree: 'Bachelors in Economics',
-    location: 'Ho Chi Minh, VN',
-    startDate: '9/2019',
-    endDate: '12/2023',
+    degree: 'Bachelors in Computer Science',
+    school: 'Hidden University',
+    location: 'Hidden Location',
+    startDate: 'Hidden',
+    endDate: 'Hidden',
     isHidden: false,
     id: uuid(),
   },
@@ -40,8 +40,8 @@ export const defaultEducationItems: EducationItem[] = [
 
 export const defaultExperienceItems: ExperienceItem[] = [
   {
-    company: 'Apple Corp',
-    position: 'Backend Developer',
+    company: 'Apple',
+    position: 'Full Stack Software Development Engineer',
     startDate: '1/2025',
     endDate: 'Unknown',
     location: 'Silicon Valley, CA',
@@ -51,8 +51,8 @@ export const defaultExperienceItems: ExperienceItem[] = [
     id: uuid(),
   },
   {
-    company: 'Netflix Corp',
-    position: 'Senior Backend Developer',
+    company: 'Netflix',
+    position: 'Senior Full Stack Software Development Engineer',
     startDate: '1/2026',
     endDate: 'Unknown',
     location: 'Seattle, WA',
@@ -62,8 +62,8 @@ export const defaultExperienceItems: ExperienceItem[] = [
     id: uuid(),
   },
   {
-    company: 'Google Corp',
-    position: 'Backend Software Engineer',
+    company: 'Google',
+    position: 'CTO',
     startDate: '1/2027',
     endDate: 'Unknown',
     location: 'San Francisco, CA',
